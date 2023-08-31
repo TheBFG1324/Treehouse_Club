@@ -22,7 +22,7 @@ function Header() {
     <div
       className="treehouse-container"
       style={{
-        backgroundColor: `rgba(214, 115, 39, ${1 - scrollOpacity})`,
+        backgroundColor: `rgb(253, 151, 68 ${1 - scrollOpacity})`,
       }}
     >
       <div className="treehouse-content" style={{ opacity: scrollOpacity }}>

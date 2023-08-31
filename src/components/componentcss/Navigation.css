@@ -1,0 +1,25 @@
+.NavigationButtons {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(253, 151, 68, 0.9);
+  padding: 40px 80px; /* Increase padding for a larger section */
+  border-radius: 20px; /* Add rounded corners */
+  backdrop-filter: blur(10px); /* Add a blurry effect */
+}
+
+.NavButton {
+  padding: 15px 30px; /* Increase padding for larger buttons */
+  background-color: #076a6a !important;
+  color: white;
+  border: none;
+  border-radius: 6px; /* Increase border-radius for slightly rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 18px; /* Increase font size for larger buttons */
+  height: auto; /* Allow the button to grow vertically */
+  width: 150px; /* Set a fixed width for the buttons */
+}
+
+.NavButton:hover {
+  background-color: #076a6a;
+}

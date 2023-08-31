@@ -5,8 +5,12 @@
   align-items: center;
   height: 100vh;
   overflow: hidden;
-  transition: background-color 0.5s ease; /* Add transition for smooth color change */
-  background-color: rgba(139, 3, 197, 0.9); /* Darker version of #FD7F20 with 90% opacity */
+  transition: background-color 0.5s ease;
+  /* Add transition for smooth color change */
+  background-color: rgb(253, 151, 68, 0.9);
+  /* Darker version of #FD7F20 with 90% opacity */
+  border-radius: 20px; /* Add rounded corners */
+  backdrop-filter: blur(10px); /* Add a blurry effect */
 }
 
 .treehouse-content {
@@ -20,7 +24,8 @@
   width: 100vw;
   height: auto;
   z-index: 1;
-  filter: brightness(0.8); /* Adjust the brightness level as needed */
+  filter: brightness(0.8);
+  /* Adjust the brightness level as needed */
 }
 
 .treehouse-content h1 {
@@ -31,12 +36,16 @@
   top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex; /* Enable flex layout */
-  align-items: center; /* Center vertically within container */
+  display: flex;
+  /* Enable flex layout */
+  align-items: center;
+  /* Center vertically within container */
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .treehouse-content h1 span {
-  display: inline-block; /* Prevent line breaks between words */
-  padding: 0 20px; /* Add spacing between words if desired */
+  display: inline-block;
+  /* Prevent line breaks between words */
+  padding: 0 20px;
+  /* Add spacing between words if desired */
 }

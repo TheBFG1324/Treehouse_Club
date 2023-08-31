@@ -16,12 +16,17 @@ function App() {
 
   return (
     <div>
+    <div>
       <Header />
       <NavigationBar onPageChange={handlePageChange}/>
       {activePage === "About" && <About />}
       {activePage === "Feed" && <Feed />}
       {activePage === "Search" && <Search />}
       {activePage === "Account" && <Account />}
+    </div>
+    <div style={{ marginBottom: '500px' }}>
+
+    </div>
     </div>
   );
 }
