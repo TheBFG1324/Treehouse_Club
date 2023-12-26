@@ -17,8 +17,10 @@ function App() {
   return (
     <div>
     <div>
+      <div className='Top'>
       <Header />
       <NavigationBar onPageChange={handlePageChange}/>
+      </div>
       {activePage === "About" && <About />}
       {activePage === "Feed" && <Feed />}
       {activePage === "Search" && <Search />}

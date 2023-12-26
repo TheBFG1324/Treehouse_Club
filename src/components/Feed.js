@@ -1,8 +1,9 @@
 import React from 'react'
+import GeneratePost from './API/PostTemplate'
 
 function Feed(){
     return(
-        <h2>THis is the Feed</h2>
+       <GeneratePost />
     )
 }
 

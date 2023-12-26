@@ -1,0 +1,25 @@
+/* About.css */
+.AboutContainer {
+    max-width: 800px;
+    margin: 100px auto; /* Add margin at the top to separate it from the component above */
+    padding: 20px;
+    border: 8px solid #076a6a;
+    border-radius: 5px;
+    text-align: center; /* Center-align the content */
+  }
+  
+  h1 {
+    font-size: 44px;
+    color: #333;
+  }
+  
+  p {
+    font-size: 22px;
+    color: #333; /* Darken the text color for better contrast */
+    line-height: 1.6; /* Increase line height for readability */
+    text-align: left; /* Left-align the paragraphs within the centered container */
+    margin-top: 20px; /* Add some spacing between paragraphs */
+  }
+  
+  /* Add more styles as needed */
+  

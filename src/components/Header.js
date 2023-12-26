@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './componentcss/Header.css';
-import TreeHouseHeader from './componentcss/TreeHouseHeader.png'; // Import the image
+
 
 function Header() {
   const [scrollOpacity, setScrollOpacity] = useState(1);
@@ -22,11 +22,11 @@ function Header() {
     <div
       className="treehouse-container"
       style={{
-        backgroundColor: `rgb(253, 151, 68 ${1 - scrollOpacity})`,
+        backgroundColor: `rgb(253, 151, 68, ${1 - scrollOpacity})`,
       }}
     >
       <div className="treehouse-content" style={{ opacity: scrollOpacity }}>
-        <img src={TreeHouseHeader} alt="Treehouse" />
+        <img src='TreeHouseHeader.png' alt="Treehouse" />
         <div className="text-container">
           <h1>
             <span>The</span>

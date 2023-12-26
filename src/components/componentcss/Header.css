@@ -7,9 +7,8 @@
   overflow: hidden;
   transition: background-color 0.5s ease;
   /* Add transition for smooth color change */
-  background-color: rgb(253, 151, 68, 0.9);
+  background-color: var(--blur-color);
   /* Darker version of #FD7F20 with 90% opacity */
-  border-radius: 20px; /* Add rounded corners */
   backdrop-filter: blur(10px); /* Add a blurry effect */
 }
 

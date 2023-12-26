@@ -1,10 +1,11 @@
 .NavigationButtons {
+  position: relative;
   display: flex;
   justify-content: space-between;
-  background-color: rgba(253, 151, 68, 0.9);
+  background-color: var(--blur-color); /* Start with full opacity */
   padding: 40px 80px; /* Increase padding for a larger section */
-  border-radius: 20px; /* Add rounded corners */
   backdrop-filter: blur(10px); /* Add a blurry effect */
+  transition: background-color 0.5s ease; /* Add transition for smooth color change */
 }
 
 .NavButton {
@@ -23,3 +24,7 @@
 .NavButton:hover {
   background-color: #076a6a;
 }
+
+
+
+
