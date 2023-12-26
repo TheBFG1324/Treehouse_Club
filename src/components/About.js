@@ -1,8 +1,12 @@
 import React from 'react';
 import './componentcss/About.css';
+import Header from './/Header';
 
 function About() {
   return (
+    
+    <div>
+    <Header />
     <div className='AboutContainer'>
       <h1>Mission Statement</h1>
       <p>
@@ -26,6 +30,7 @@ function About() {
         Feel the flames of your soul burn bright, and Welcome to the Treehouse
         Club.
       </p>
+    </div>
     </div>
   );
 }

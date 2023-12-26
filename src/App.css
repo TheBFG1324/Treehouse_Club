@@ -1,7 +1,9 @@
 .App {
   text-align: center;
+  background-color: rgb(247, 248, 243);
 }
 
-.top{
-  background-color: rgba(253, 151, 68, 0.9);;
+.Top{
+  padding-bottom: 150px;
+  background-color: rgb(247, 248, 243);
 }

@@ -27,3 +27,15 @@
   text-align: center; /* This will center the text itself */
   z-index: 2;
 }
+
+.cursor {
+  display: inline-block;
+  margin-left: 2px; /* Adjust space between word and cursor as needed */
+  opacity: 1;
+  animation: blink .9s infinite; /* Creates the blinking effect */
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

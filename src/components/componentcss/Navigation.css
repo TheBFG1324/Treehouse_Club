@@ -1,36 +1,38 @@
 .NavigationButtons {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: left-start;
   align-items: center;
-  padding: 40px 80px; /* Increase padding for a larger section */
-  backdrop-filter: blur(10px); /* Add a blurry effect */
-  transition: background-color 0.5s ease; /* Add transition for smooth color change */
+  padding: 0px 40px;
+  background-color: rgb(247, 248, 243);
+  z-index: 1000;
+  border-bottom: 2px solid black;
 }
 
-.NavigationButtons h1 {
-  margin-right: auto; /* This will push all other elements to the right */
+.nav-left {
+  padding-right: 500px;
 }
 
-.buttons-container {
-  margin-left: auto;
+.nav-right {
   display: flex;
-  gap: 40px; /* Adjusted gap for more space between buttons */
+  gap: 20px;
 }
 
 .NavButton {
-  padding: 15px 30px; /* Increase padding for larger buttons */
-  background-color: #076a6a !important; /* Important to override default styles */
+  padding: 15px 20px;
+  background-color: #076a6a !important;
   color: white;
   border: none;
-  border-radius: 6px; /* Increase border-radius for slightly rounded corners */
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 18px; /* Increase font size for larger buttons */
-  height: auto; /* Allow the button to grow vertically */
-  width: 150px; /* Set a fixed width for the buttons */
-  margin-right: 20px; /* Add right margin to all buttons */
+  font-size: 18px;
+  height: auto;
+  white-space: nowrap;
 }
 
 .NavButton:hover {
-  background-color: #054d4d; /* Slightly darker shade for hover effect */
+  background-color: #054d4d;
 }
