@@ -1,50 +1,29 @@
 .treehouse-container {
-  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
-  overflow: hidden;
   transition: background-color 0.5s ease;
-  /* Add transition for smooth color change */
-  background-color: var(--blur-color);
-  /* Darker version of #FD7F20 with 90% opacity */
-  backdrop-filter: blur(10px); /* Add a blurry effect */
+  background-color: rgb(247, 248, 243);
+  backdrop-filter: blur(10px);
 }
 
 .treehouse-content {
-  position: relative;
-  text-align: center;
-  transition: opacity 0.2s ease;
-  z-index: 2;
+  flex: 1; /* This will allow the image to take up only as much space as it needs */
+  display: flex;
+  align-items: center; /* This will vertically center the image within its container */
 }
 
 .treehouse-content img {
-  width: 100vw;
-  height: auto;
+  width: auto;
+  height: 100%;
+  object-fit: contain;
   z-index: 1;
-  filter: brightness(0.8);
-  /* Adjust the brightness level as needed */
 }
 
-.treehouse-content h1 {
-  font-size: 10rem;
-  margin-top: 15px;
-  color: white;
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.badass-words {
+  flex: 1; /* This will give the text container the remaining space */
   display: flex;
-  /* Enable flex layout */
-  align-items: center;
-  /* Center vertically within container */
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-}
-
-.treehouse-content h1 span {
-  display: inline-block;
-  /* Prevent line breaks between words */
-  padding: 0 20px;
-  /* Add spacing between words if desired */
+  justify-content: center; /* This will horizontally center the text within its container */
+  align-items: center; /* This will vertically center the text within its container */
+  text-align: center; /* This will center the text itself */
+  z-index: 2;
 }

@@ -2,29 +2,35 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  background-color: var(--blur-color); /* Start with full opacity */
+  align-items: center;
   padding: 40px 80px; /* Increase padding for a larger section */
   backdrop-filter: blur(10px); /* Add a blurry effect */
   transition: background-color 0.5s ease; /* Add transition for smooth color change */
 }
 
+.NavigationButtons h1 {
+  margin-right: auto; /* This will push all other elements to the right */
+}
+
+.buttons-container {
+  margin-left: auto;
+  display: flex;
+  gap: 40px; /* Adjusted gap for more space between buttons */
+}
+
 .NavButton {
   padding: 15px 30px; /* Increase padding for larger buttons */
-  background-color: #076a6a !important;
+  background-color: #076a6a !important; /* Important to override default styles */
   color: white;
   border: none;
   border-radius: 6px; /* Increase border-radius for slightly rounded corners */
   cursor: pointer;
-  transition: background-color 0.3s ease;
   font-size: 18px; /* Increase font size for larger buttons */
   height: auto; /* Allow the button to grow vertically */
   width: 150px; /* Set a fixed width for the buttons */
+  margin-right: 20px; /* Add right margin to all buttons */
 }
 
 .NavButton:hover {
-  background-color: #076a6a;
+  background-color: #054d4d; /* Slightly darker shade for hover effect */
 }
-
-
-
-
