@@ -1,0 +1,78 @@
+/* This will ensure the whole account container is well-structured and centered */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.account-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* or your preferred max width */
+    margin: auto;
+}
+
+.account-header {
+    display: flex;
+    flex-direction: row; /* Aligns child divs horizontally */
+    align-items: center; /* Aligns items vertically in the center */
+    background-color: rgb(247, 248, 243);
+    padding: 20px;
+    width: 100%;
+    padding-left: 300px;
+}
+
+/* Adjust the .circle-image as per your existing style */
+.circle-image {
+    width: 300px; /* Adjust the size as needed */
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+/* Container for the profile picture and name */
+.account-picture {
+    display: flex;
+    flex-direction: column; /* Aligns the picture and the name vertically */
+    align-items: center; /* Centers them horizontally */
+    flex-shrink: 0; /* Prevents flex items from shrinking */
+    margin-right: 20px; /* Adds space between the picture and the account info */
+}
+
+.profile-name {
+    margin-top: 10px; /* Adjust space between the image and the name */
+    text-align: center; /* Centers the profile name */
+    font-family: 'Roboto', sans-serif; /* Use the font you imported */
+    font-size: 24px; /* This sets the size of the font */
+    font-weight: 700; /* This makes the font bold */
+}
+
+.account-information {
+    display: flex; /* Keeps items in a row */
+    justify-content: flex-start; /* Aligns items to the start */
+    align-items: center; /* Center items vertically */
+    padding-left: 150px;
+    width: 100%; /* Adjusts the width */
+    max-width: 600px; /* Set a maximum width for the container */
+}
+
+/* Styles for each stats div (posts, followers, following, engagements) */
+.posts, .followers, .following, .engagements {
+    display: flex;
+    flex-direction: column; /* Stack number and title */
+    align-items: center; /* Center items horizontally */
+    margin-right: 100px; /* Adjust space between the items */
+}
+
+
+/* Styles for the numbers */
+.posts-count, .followers-count, .following-count, .engagements-count {
+    font-size: 2em; /* Makes the font larger */
+    margin: 0; /* Removes default margins */
+    /* Additional styling if needed */
+}
+
+/* Styles for the titles */
+.post-title, .followers-title, .following-title, .engagement-title { /* Note: Check the class name 'engagement-title' for typo */
+    font-size: 1em; /* Sets a smaller font size than the numbers */
+    margin: 0; /* Removes default margins */
+    /* Additional styling if needed */
+}
