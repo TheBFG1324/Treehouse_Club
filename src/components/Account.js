@@ -1,7 +1,24 @@
 import React from 'react'
 import './componentcss/Account.css'
+import AccountTemplatePost from './AccountTemplatePost'
 
 function Account(){
+
+    let props = {
+        account: "tim", 
+        coverPhoto: 'OdeToYes.pdf',
+        postImage: "dec.jpeg",
+        title: "Ode To Yes ",
+        date: "10/25/23",
+        likes: 16,
+        comments: {
+            "Sally": "Good job Tim",
+            "Bob": "Fuck you Tim"
+        },
+        commentsCount: 2
+        }
+        const posts = [props, props, props, props, props, props];
+
     return(
         <div className='account-container'>
             <div className='account-header'>
@@ -30,7 +47,9 @@ function Account(){
                 </div>
             </div>
             <div className='account-posts'>
-                <h1>Account posts</h1>
+                {posts.map((post, index) => (
+                    <AccountTemplatePost key={index} props={post} />
+                ))}
             </div>
         </div>
     )

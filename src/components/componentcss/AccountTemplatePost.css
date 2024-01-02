@@ -1,0 +1,71 @@
+.AccountTemplatePost-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* choose one box-shadow */
+    width: calc(33.333% - 200px); /* Adjusted for a smaller gap, change as needed */
+    transition: transform 0.3s ease;
+    transform: scale(1); /* Start at normal size */
+}
+
+.AccountTemplatePost-container:hover {
+    transform: scale(1.05); /* Grows larger when hovered */
+}
+
+.AccountTemplatePost-container:hover {
+    transform: scale(1.05); /* Adjust scale value as needed */
+}
+
+
+/* Style the container holding the post's image */
+.postImage-container {
+    display: flex;
+    flex-direction: column; /* Stack the image and title vertically */
+    align-items: center; /* Center the items horizontally */
+    margin-bottom: 20px;
+}
+
+.postImage-container img {
+    max-width: 100%; /* Ensure the image doesn't overflow its container */
+    height: auto;
+    border-bottom: 1px solid #ccc; /* Separator between image and text */
+}
+
+/* Style for the title below the image */
+.imagetitle {
+    font-size: 20px; /* Large text for the title */
+    color: #333; /* Dark color for the title */
+    padding: 10px 0; /* Some space above and below the title */
+}
+
+/* Style the container for post information like date, likes, and comments */
+.PostInformation-container {
+    display: flex;
+    justify-content: space-around; /* Distribute space between the info items */
+}
+
+/* Style each information item container */
+.information-container {
+    display: flex;
+    align-items: center; /* Align the image and text on the same line */
+}
+
+.information-container img {
+    width: 24px; /* Small icon size */
+    height: 24px;
+    margin-right: 10px; /* Space between the icon and the text */
+}
+
+.information-container h2 {
+    margin: 0; /* Remove default margin */
+    font-size: 16px; /* Moderately large text */
+    color: #555; /* Slightly lighter text color */
+}
+
+.account-posts {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap onto the next line */
+    justify-content: center; /* Centers items in the container */
+    gap: 100px; /* Adjust as needed for spacing between posts */
+    padding: 20px; /* Padding around the whole posts container */
+}
