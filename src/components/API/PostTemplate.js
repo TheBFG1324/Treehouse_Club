@@ -4,12 +4,12 @@ import { useState } from "react"
 
 function GeneratePost(props){
 
-    const account = props.account
-    const coverPhoto = props.coverPhoto;
-    const data = props.data;
-    const date = props.date
-    const likes = props.likes
-    const comments = props.comments
+    const account = props.props.account
+    const coverPhoto = props.props.coverPhoto;
+    const data = props.props.data;
+    const date = props.props.date
+    const likes = props.props.likes
+    const comments = props.props.comments
 
     const [showPDF, setShowPDF] = useState(false)
 

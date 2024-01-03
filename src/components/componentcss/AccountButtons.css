@@ -1,0 +1,99 @@
+/* Base container and button styling */
+.post-container {
+    display: flex; /* Use flexbox to lay out children */
+    padding: 20px;
+    gap: 20px; /* This will create space between your buttons */
+    box-sizing: border-box; /* Include padding in the width calculations */
+}
+
+/* Modal styling */
+.form-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+/* Form styling */
+.post-form label {
+    display: block;
+    margin: 15px 0;
+    color: #333;
+    font-weight: bold;
+}
+
+.post-form input[type="text"],
+.post-form input[type="file"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.post-form input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* Button Styling */
+button {
+    flex: 1; /* Make buttons share the container space equally */
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+/* Styling for the 'Create Post' button */
+.post-container > button {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    border-radius: 0;
+}
+
+.post-container > button:hover {
+    background-color: #f6ba6b;
+    border-color: #bbbbbb00;
+}
+
+/* Additional styling for the submit and cancel buttons */
+.form-buttons button {
+    margin-right: 10px;
+}
+
+.form-buttons button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.form-buttons button[type="button"] {
+    background-color: #f44336;
+    color: white;
+}
+
+.form-buttons button:hover {
+    opacity: 0.9;
+}
+
+/* Styling for the fieldset and labels of radio buttons */
+fieldset {
+    border: none;
+    margin: 10px 0;
+    padding: 0;
+}
+
+.post-form legend {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}

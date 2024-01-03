@@ -8,6 +8,7 @@ import './App.css'
 
 function App() {
   const [activePage, setActivePage] = useState('About')
+  const [account, setAccount] = useState("TheBFG1324")
 
   const handlePageChange = (page) => {
     setActivePage(page)
@@ -21,7 +22,7 @@ function App() {
       {activePage === "About" && <About />}
       {activePage === "Feed" && <Feed />}
       {activePage === "Search" && <Search />}
-      {activePage === "Account" && <Account />}
+      {activePage === "Account" && <Account user={account} />}
     </div>
   );
 }

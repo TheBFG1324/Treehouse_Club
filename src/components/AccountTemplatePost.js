@@ -2,7 +2,6 @@ import React from 'react'
 import './componentcss/AccountTemplatePost.css'
 
 function AccountTemplatePost(props){
-    console.log(props.props.title)
     const postImage = props.props.postImage
     const title = props.props.title
     const date = props.props.date

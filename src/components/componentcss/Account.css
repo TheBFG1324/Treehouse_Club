@@ -1,78 +1,89 @@
-/* This will ensure the whole account container is well-structured and centered */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 .account-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%; /* or your preferred max width */
+    width: 100%;
     margin: auto;
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    background-color: rgb(247, 248, 243);
 }
 
 .account-header {
     display: flex;
-    flex-direction: row; /* Aligns child divs horizontally */
-    align-items: center; /* Aligns items vertically in the center */
-    background-color: rgb(247, 248, 243);
-    padding: 20px;
     width: 100%;
-    padding-left: 300px;
+    background-color: rgb(247, 248, 243);
+    align-items: flex-start;
+    box-sizing: border-box;
 }
 
-/* Adjust the .circle-image as per your existing style */
-.circle-image {
-    width: 300px; /* Adjust the size as needed */
-    height: 300px;
-    border-radius: 50%;
-    overflow: hidden;
-    object-fit: cover;
-}
-
-/* Container for the profile picture and name */
-.account-picture {
+.profile-section {
     display: flex;
-    flex-direction: column; /* Aligns the picture and the name vertically */
-    align-items: center; /* Centers them horizontally */
-    flex-shrink: 0; /* Prevents flex items from shrinking */
-    margin-right: 20px; /* Adds space between the picture and the account info */
+    flex-direction: column;
+    align-items: left;
+    margin-right: 40px;
+    margin-left: 40px;
+    margin-bottom: 30px;
+
+}
+
+.circle-image {
+    width: 250px; /* Adjust size as necessary */
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
 }
 
 .profile-name {
-    margin-top: 10px; /* Adjust space between the image and the name */
-    text-align: center; /* Centers the profile name */
-    font-family: 'Roboto', sans-serif; /* Use the font you imported */
-    font-size: 24px; /* This sets the size of the font */
-    font-weight: 700; /* This makes the font bold */
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.account-info-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-left: 40px; /* Added margin to the left to push content right */
+    margin-top: 50px;
 }
 
 .account-information {
-    display: flex; /* Keeps items in a row */
-    justify-content: flex-start; /* Aligns items to the start */
-    align-items: center; /* Center items vertically */
-    padding-left: 150px;
-    width: 100%; /* Adjusts the width */
-    max-width: 600px; /* Set a maximum width for the container */
-}
-
-/* Styles for each stats div (posts, followers, following, engagements) */
-.posts, .followers, .following, .engagements {
     display: flex;
-    flex-direction: column; /* Stack number and title */
-    align-items: center; /* Center items horizontally */
-    margin-right: 100px; /* Adjust space between the items */
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+    margin-bottom: 20px;
 }
 
+.stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-/* Styles for the numbers */
 .posts-count, .followers-count, .following-count, .engagements-count {
-    font-size: 2em; /* Makes the font larger */
-    margin: 0; /* Removes default margins */
-    /* Additional styling if needed */
+    font-size: 2em;
+    margin: 0;
 }
 
-/* Styles for the titles */
-.post-title, .followers-title, .following-title, .engagement-title { /* Note: Check the class name 'engagement-title' for typo */
-    font-size: 1em; /* Sets a smaller font size than the numbers */
-    margin: 0; /* Removes default margins */
-    /* Additional styling if needed */
+.post-title, .followers-title, .following-title, .engagement-title {
+    font-size: 1em;
+    margin: 0;
+}
+
+.account-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.account-posts {
+    width: 100%;
+    background-color: white;
 }
