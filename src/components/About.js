@@ -27,7 +27,7 @@ function About() {
       <p>
         Be the change you want to see in the world. Wave your quill with
         unwavering determination. Paint the world in the light that you see it.
-        Feel the flames of your soul burn bright, and Welcome to the Treehouse
+        Feel the flames of your soul burn bright. Welcome to the Treehouse
         Club.
       </p>
     </div>

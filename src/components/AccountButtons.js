@@ -59,6 +59,10 @@ function AccountButtons(props) {
                             </label>
                         </fieldset>
                         <label>
+                            Cover Image
+                            <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+                        </label>
+                        <label>
                             Upload File
                             <input type="file" onChange={(e) => setFile(e.target.files[0])} />
                         </label>

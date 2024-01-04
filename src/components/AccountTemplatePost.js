@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './componentcss/AccountTemplatePost.css'
 
+
 function AccountTemplatePost(props){
-    const postImage = props.props.postImage
-    const title = props.props.title
-    const date = props.props.date
-    const likes = props.props.likes
-    const commentsCount = props.props.commentsCount
+    console.log("here")
+    console.log(props.user)
+    console.log(props)
+    const postImage = props.postInfo.postImage
+    const title = props.postInfo.title
+    const date = props.postInfo.date
+    const likes = props.postInfo.likes
+    const commentsCount = props.postInfo.commentsCount
+
     return (
-        <div className='AccountTemplatePost-container'>
+        <div className='AccountTemplatePost-container' onClick={() => props.onClick(props.postInfo)}>
             <div className='PostCover-container'></div>
             <div className='postImage-container'>
                 <img src={postImage}></img>

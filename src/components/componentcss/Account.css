@@ -65,6 +65,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0; /* Resets any default margin */
+    padding: 0; /* Resets any default padding */
 }
 
 .posts-count, .followers-count, .following-count, .engagements-count {
@@ -76,7 +78,11 @@
     font-size: 1em;
     margin: 0;
 }
-
+.engagment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .account-buttons {
     width: 100%;
     display: flex;
@@ -86,4 +92,39 @@
 .account-posts {
     width: 100%;
     background-color: white;
+}
+
+.modal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 9000px; /* Adjust the maximum width you want */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
 }
