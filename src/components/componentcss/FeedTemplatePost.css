@@ -1,0 +1,88 @@
+/* Style the main container */
+.feedTemplatePost-container {
+    width: 95%; /* Adjust as needed */
+    margin: 20px auto; /* Centering the container */
+    background: #fff; /* White background for a clean look */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    position: relative; /* Needed for absolute positioning of children */
+    overflow: hidden; /* Ensures no child elements will overflow */
+    transition: transform 0.3s ease;
+}
+
+.feedTemplatePost-container:hover {
+    transform: scale(1.02); /* Increase the size of the container by 5% */
+}
+
+/* Style the profile section */
+.profile-section {
+    position: absolute; /* Absolute positioning relative to feedTemplatePost-container */
+    top: 20px; /* Adjust as needed */
+    left: 20px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns items to the left */
+    z-index: 2;
+}
+
+.profile-pic {
+    width: 60px; /* Adjust as needed */
+    height: 60px; /* Adjust as needed */
+    border-radius: 50%; /* Circular image */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    margin-bottom: 10px;
+}
+
+/* Style the post image */
+.post-image {
+    width: calc(100% - 900px); /* Adjust width as needed, minus padding */
+    margin: 0 auto; /* Center the image within the container */
+    display: block; /* Ensures the image is a block element */
+    border-radius: 5px; /* Slight rounding */
+    margin-bottom: 0;
+}
+
+/* Style the title */
+.post-title-feed {
+    text-align: center; /* Centering the title */
+    font-size: 20px; /* Moderately large text */
+    color: #000000; /* Slightly lighter text color */
+    margin-top: 20px; /* Adjust as needed */
+    padding-bottom: 10px;
+}
+
+/* Style the container for post information like date, likes, and comments */
+.PostInformation-container {
+    display: flex;
+    justify-content: space-around; /* Distribute space between the info items */
+    margin-top: 20px; /* Space above the post info */
+}
+
+/* Style each information item container */
+.information-container {
+    display: flex;
+    align-items: center; /* Align the image and text on the same line */
+}
+
+.information-container img {
+    width: 24px; /* Small icon size */
+    height: 24px;
+    margin-right: 5px; /* Space between the icon and the text */
+}
+
+.information-container h2 {
+    margin: 0; /* Remove default margin */
+    font-size: 16px; /* Moderately large text */
+    color: #555; /* Slightly lighter text color */
+}
+
+
+/* Style the account-posts if used elsewhere */
+.account-posts {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap onto the next line */
+    justify-content: center; /* Centers items in the container */
+    gap: 100px; /* Adjust as needed for spacing between posts */
+    padding: 20px; /* Padding around the whole posts container */
+}

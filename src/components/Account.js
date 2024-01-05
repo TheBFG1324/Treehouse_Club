@@ -18,7 +18,8 @@ function Account(props) {
             "Sally": "Good job Tim",
             "Bob": "Fuck you Tim"
         },
-        commentsCount: 2
+        commentsCount: 2,
+        profilePicture: "test2.jpeg"
     };
 
     const publicPosts = new Array(6).fill(post); // Create an array of posts

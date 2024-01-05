@@ -1,21 +1,28 @@
 import React from 'react'
-import GeneratePost from './API/PostTemplate'
+import FeedTemplatePost from './FeedTemplatePost';
+
 
 function Feed(){
-    let props = {
-        account: "tim", 
+    let post = {
+        account: "TheBFG1324",
+        post: 'OdeToYes.pdf',
         postImage: "dec.jpeg",
-        coverPhoto: 'OdeToYes.pdf',
-        data: "Ode To Yes ",
+        title: "Ode To Yes",
         date: "10/25/23",
         likes: 16,
         comments: {
             "Sally": "Good job Tim",
             "Bob": "Fuck you Tim"
-        }
-        }
+        },
+        commentsCount: 2,
+        profilePicture: "test2.jpeg"
+    };
     return(
-       <GeneratePost props={props}/>
+       <div className='feed-container'>
+            <div className='feedPosts-container'>
+                <FeedTemplatePost postInfo={post} />
+            </div>
+       </div>
     )
 }
 
