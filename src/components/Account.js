@@ -59,7 +59,7 @@ function Account(props) {
             <div className='account-header'>
                 <div className='profile-section'>
                     <img src={Public ? profilePicture : "Treehouse1.png"} alt="profile pic" className="circle-image"/>
-                    <h1 className='profile-name'>{Public ? publicName : privateName}</h1>
+                    <h1 className='profile-name-account'>{Public ? publicName : privateName}</h1>
                 </div>
                 <div className='account-info-buttons'>
                     <div className='account-information'>

@@ -1,0 +1,15 @@
+.addPosts-btn button {
+    width: 100%; /* Span the full width of its container */
+    padding: 10px 0; /* Add some padding for better visual appearance */
+    background-color: rgb(241, 175, 52); /* Set the button's background color to orange */
+    border: none; /* Remove the border */
+    border-radius: 0; /* No rounded corners for full-width button */
+    color: white; /* Set the text color to white for better contrast */
+    font-size: 16px; /* Set the font size */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    transition: background-color 0.3s; /* Smooth transition for background color change */
+}
+
+.addPosts-btn button:hover {
+    background-color: darkorange; /* Darker shade of orange on hover */
+}

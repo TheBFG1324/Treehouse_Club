@@ -9,6 +9,8 @@
     padding: 20px;
     box-sizing: border-box; /* Ensure padding is included in the width */
     background-color: rgb(247, 248, 243);
+    padding-top: 80px;
+    padding-bottom: 90px;
 }
 
 .account-header {
@@ -17,6 +19,8 @@
     background-color: rgb(247, 248, 243);
     align-items: flex-start;
     box-sizing: border-box;
+    padding-bottom: 80px;
+
 }
 
 .profile-section {
@@ -26,6 +30,7 @@
     margin-right: 40px;
     margin-left: 40px;
     margin-bottom: 30px;
+    margin-top: 130px;
 
 }
 
@@ -37,7 +42,7 @@
     margin-bottom: 10px;
 }
 
-.profile-name {
+.profile-name-account {
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
     font-weight: 700;

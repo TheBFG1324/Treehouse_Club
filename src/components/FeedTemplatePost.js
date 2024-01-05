@@ -5,7 +5,7 @@ function FeedTemplatePost(props) {
     const post = props.postInfo;
 
     return (
-        <div className="feedTemplatePost-container">
+        <div className="feedTemplatePost-container" onClick={() => props.onClick(post)}>
             <div className="profile-section">
                 <img className="profile-pic" src={post.profilePicture} alt="profile pic"></img>
                 <h3>{post.account}</h3>

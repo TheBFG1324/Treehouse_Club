@@ -34,7 +34,7 @@ function Header() {
         }, 1000);
         clearInterval(interval); // Clear the typing interval during the pause
       }
-    }, 300);
+    }, 200);
 
     return () => clearInterval(interval);
   }, [wordIndex, letterIndex, isEndOfWord]); // Include isEndOfWord in dependencies
