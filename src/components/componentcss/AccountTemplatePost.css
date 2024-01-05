@@ -3,7 +3,7 @@
     padding: 20px;
     margin: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* choose one box-shadow */
-    width: calc(33.333% - 200px); /* Adjusted for a smaller gap, change as needed */
+    width: calc(33.333% - 150px); /* Adjusted for a smaller gap, change as needed */
     transition: transform 0.3s ease;
     transform: scale(1); /* Start at normal size */
 }
@@ -53,7 +53,7 @@
 .information-container img {
     width: 24px; /* Small icon size */
     height: 24px;
-    margin-right: 10px; /* Space between the icon and the text */
+    margin-right: 5px; /* Space between the icon and the text */
 }
 
 .information-container h2 {

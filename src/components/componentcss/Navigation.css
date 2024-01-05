@@ -4,17 +4,15 @@
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: left-start;
+  justify-content: space-between; /* Updated this line */
   align-items: center;
   padding: 0px 40px;
   background-color: rgb(247, 248, 243);
   z-index: 1000;
   border-bottom: 2px solid black;
+  box-sizing: border-box;
 }
 
-.nav-left {
-  padding-right: 900px;
-}
 
 .nav-right {
   display: flex;
@@ -35,4 +33,17 @@
 
 .NavButton:hover {
   background-color: #054d4d;
+}
+
+/* Example of a media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .NavigationButtons {
+    padding: 0px 20px; /* Less padding on smaller screens */
+  }
+  .nav-right {
+    gap: 0px; /* Less gap on smaller screens */
+  }
+  .NavButton {
+    padding: 10px 15px; /* Smaller buttons on smaller screens */
+  }
 }
