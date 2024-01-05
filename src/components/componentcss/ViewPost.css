@@ -12,12 +12,7 @@
 }
 
 /* Modal Content */
-.modal-content {
-    background-color: transparent; /* Set to transparent or match the inner background */
-    border: none; /* Remove border */
-    box-shadow: none; /* Remove shadow if not needed */
-    /* Rest of your styling */
-}
+
 
 /* Post Title Section */
 .post-title {
