@@ -1,5 +1,5 @@
 import React from 'react';
-import './componentcss/Navigation.css';
+import './css/Navigation.css';
 
 function NavigationBar({ onPageChange }) {
   return (

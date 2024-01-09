@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import NavigationBar from './components/Navigation'; 
-import About from './components/About'; 
-import Feed from './components/Feed';
-import Search from './components/Search';
-import Account from './components/Account';
+import NavigationBar from './components//Navigation/Navigation'; 
+import About from './components/About/About'; 
+import Feed from './components/Feed/Feed';
+import Search from './components/Search/Search';
+import Account from './components/Account/Account';
 import './App.css'
 
 function App() {

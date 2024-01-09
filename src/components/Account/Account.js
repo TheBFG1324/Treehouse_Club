@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './componentcss/Account.css';
+import './css/Account.css';
 import AccountTemplatePost from './AccountTemplatePost';
 import AccountButtons from './AccountButtons';
 import CryptoJS from 'crypto-js';
-import PostView from './ViewPost';
+import PostView from '../General/ViewPost';
 
 function Account(props) {
 
@@ -23,12 +23,12 @@ function Account(props) {
     };
 
     const publicPosts = new Array(6).fill(post); // Create an array of posts
-    const privatePosts = new Array(3).fill(post);
+    const anonymousPosts = new Array(3).fill(post);
     const publicName = props.user;
-    const privateName = "0x" + CryptoJS.SHA256(publicName).toString().slice(0, 16);
+    const anonymousName = "0x" + CryptoJS.SHA256(publicName).toString().slice(0, 16);
     const profilePicture = "test2.jpeg"; // Ensure this path is correct and accessible
     const publicPostCount = publicPosts.length
-    const privatePostCount = privatePosts.length
+    const privatePostCount = anonymousPosts.length
     const followers = 170;
     const following = 190;
     const publicEngagement = 789;
@@ -59,7 +59,7 @@ function Account(props) {
             <div className='account-header'>
                 <div className='profile-section'>
                     <img src={Public ? profilePicture : "Treehouse1.png"} alt="profile pic" className="circle-image"/>
-                    <h1 className='profile-name-account'>{Public ? publicName : privateName}</h1>
+                    <h1 className='profile-name-account'>{Public ? publicName : anonymousName}</h1>
                 </div>
                 <div className='account-info-buttons'>
                     <div className='account-information'>
@@ -87,15 +87,16 @@ function Account(props) {
             </div>
             <div className='account-posts'>
                 {Public ? publicPosts.map((post, index) => (
-                    <AccountTemplatePost key={index} postInfo={post} user={publicName} onClick={selectPost}/>
-                )) : privatePosts.map((post, index) => (
-                    <AccountTemplatePost key={index} postInfo={post} user={publicName} onClick={selectPost}/>
+                    <AccountTemplatePost key={index} postInfo={post} onClick={selectPost}/>
+                )) : anonymousPosts.map((post, index) => (
+                    <AccountTemplatePost key={index} postInfo={post} onClick={selectPost}/>
                 ))}
             </div>
             {selectedPost && (
                 <div className='modal'>
                     <div className='modal-content'>
-                        <PostView postInfo={selectedPost} user={publicName} onClick={closePost}/>
+                        {Public && <PostView postInfo={selectedPost} user={publicName} onClick={closePost}/>}
+                        {!Public && <PostView postInfo={selectedPost} user={anonymousName} onClick={closePost}/>}
                      </div>
                 </div>
             )}

@@ -1,5 +1,5 @@
 import React from "react";
-import "./componentcss/FeedTemplatePost.css";
+import "./css/FeedTemplatePost.css";
 
 function FeedTemplatePost(props) {
     const post = props.postInfo;

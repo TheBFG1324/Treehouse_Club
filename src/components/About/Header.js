@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import './componentcss/Header.css';
+import './css/Header.css';
 
 function Header() {
   const [word, setWord] = useState('');

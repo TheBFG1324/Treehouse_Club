@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import FeedTemplatePost from './FeedTemplatePost';
-import './componentcss/Feed.css'
-import PostView from "./ViewPost.js"
+import FeedTemplatePost from './FeedTemplatePost.js';
+import './css/Feed.css'
+import PostView from "../General/ViewPost.js"
 
 
 function Feed(){
