@@ -1,19 +1,39 @@
 import React, { useState } from 'react';
-import NavigationBar from './components//Navigation/Navigation'; 
+import NavigationBar from './components/Navigation/Navigation'; 
 import About from './components/About/About'; 
 import Feed from './components/Feed/Feed';
 import Search from './components/Search/Search';
 import Account from './components/Account/Account';
-import './App.css'
+import './App.css';
+import Login from './components/Login/Login';
 
 function App() {
-  const [activePage, setActivePage] = useState('About')
-  const [account, setAccount] = useState("TheBFG1324")
+  const [activePage, setActivePage] = useState('About');
+  const [account, setAccount] = useState(null);
+  const [googleID, setGoogleID] = useState(null);
 
   const handlePageChange = (page) => {
-    setActivePage(page)
+    setActivePage(page);
+  };
+
+  const loginSuccess = (Id) => {
+    setGoogleID(Id);
+  };
+
+  const errorMessage = (error) => {
+    console.log(error);
+  };
+
+  const setUser = (account) => {
+    setAccount(account)
   }
 
+  // Check if the user is not logged in
+  if (!googleID) {
+    return <Login onSuccess={loginSuccess} onError={errorMessage} setUser={setUser} />;
+  }
+
+  // Content to render when the user is logged in
   return (
     <div>
       <div className='Top'>
