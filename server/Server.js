@@ -28,15 +28,31 @@ async function getAccount(object){
     return await collection.findOne(object);
 }
 
+async function getPost(postId){
+    if (!ObjectId.isValid(postId)) {
+        return { sucess: false, message: 'Invalid post ID' };
+    }
+
+    const objectId = new ObjectId(postId);
+    const post = await collection.findOne({_id: objectId});
+    if (!post) {
+        return { sucess: false, message: 'Post not found' };
+    }
+
+    return post
+}
+
+function areAllParametersValid(params) {
+    return Object.values(params).every(param => param);
+}
     app.post('/api/create-account', async (req, res) => {
         try {
-            const googleId = req.body.googleId;
-            const email = req.body.email;
-            const publicName = req.body.publicName;
+
+            const { googleId, email, publicName } = req.body;
             const anonymousName = crypto.createHash('sha256').update(publicName).digest('hex').slice(24, 40);
-            const accountImage = 1;
-    
-            if (!googleId || !email || !publicName || !accountImage) {
+
+            
+            if (!areAllParametersValid({ googleId, email, publicName })) {
                 return res.status(400).json({ message: 'Missing or invalid parameters in request' });
             }
 
@@ -49,7 +65,7 @@ async function getAccount(object){
                 email: email,
                 publicName: publicName,
                 anonymousName: anonymousName,
-                accountImage: accountImage,
+                accountImage: 1,
                 publicPosts: [],
                 anonymousPosts: [],
                 followers: [],
@@ -68,7 +84,7 @@ async function getAccount(object){
 
 app.get('/api/get-account-info', async (req, res) => {
     try {
-        const googleId = req.body.googleId;
+        const {googleId} = req.body;
 
         if (!googleId) {
             return res.status(400).json({ message: 'Missing or invalid googleId in request' });
@@ -84,15 +100,9 @@ app.get('/api/get-account-info', async (req, res) => {
 
 app.post('/api/create-post', async (req, res) => {
     try {
-        console.log("here")
-        const title = req.body.title;
-        const account = req.body.account;
-        const isPublic = req.body.isPublic
-        const postImage = req.body.postImage
-        const post = req.body.post
-        const googleId = req.body.googleId
+        const { title, account, isPublic, postImage, post, googleId} = req.body
 
-        if (!googleId || !title || !account || !isPublic || !post || !postImage) {
+        if (!areAllParametersValid({title, account, postImage, post, googleId})) {
             return res.status(400).json({ message: 'Missing or invalid parameters in request' });
         }
         const newItem = {
@@ -106,18 +116,13 @@ app.post('/api/create-post', async (req, res) => {
             likes: [],
             comments: []
         }
-        console.log("HERE")
-        console.log(newItem)
+
         const response = await collection.insertOne(newItem);
         const postId = response.insertedId
-        console.log(postId)
         let response2;
-        if(isPublic){
-            console.log("here")
-            response2 = await collection.updateOne({googleId: googleId}, {$push: {publicPosts: postId}});
-        } else {
-            response2 = await collection.updateOne({googleId: googleId}, {$push: {anonymousPosts: postId}});
-        }
+        const fieldToUpdate = isPublic ? 'publicPosts': 'anonymousPosts'
+        response2 = await collection.updateOne({googleId: googleId}, {$push: {[fieldToUpdate]: postId}});
+
         res.status(200).json({postID: postId, message2: response2});
     } catch (error) {
         res.status(500).json({ message: 'Error occurred while fetching items', error });
@@ -126,46 +131,98 @@ app.post('/api/create-post', async (req, res) => {
 
 app.get('/api/get-post', async (req, res) => {
     try {
-        const postId = req.query.postId;
-        if (!ObjectId.isValid(postId)) {
-            return res.status(400).json({ message: 'Invalid post ID' });
+        const {postId} = req.body;
+        const result = await getPost(postId);
+
+        if (result.success) {
+            res.status(200).json({ success: true, post: result.post });
+        } else {
+            res.status(404).json({ success: false, message: result.message });
         }
-        const post = await collection.findOne({_id: new ObjectId(postId)});
-        if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
-        }
-        res.status(200).json(post);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error occurred while fetching post', error: error.toString() });
     }
 });
 
+
 app.post('/api/delete-post', async (req, res) => {
     try {
-        const postId = req.body.postId;
+        const { postId } = req.body;
         
         if (!ObjectId.isValid(postId)) {
             return res.status(400).json({ message: 'Invalid post ID' });
         }
-        const response = await collection.deleteOne({_id: new ObjectId(postId)});
-        res.status(200).json({ message: 'Post deleted successfully', success: true, response: response });
+
+        const objectId = new ObjectId(postId);
+        const post = await collection.findOne({_id: objectId});
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        const response1 = await collection.deleteOne({_id: objectId});
+        const fieldToUpdate = post.isPublic ? 'publicPosts' : 'anonymousPosts';
+        const response2 = await collection.updateOne({googleId: post.ownerId}, {$pull: {[fieldToUpdate]: objectId}});
+
+        res.status(200).json({ message: 'Post deleted successfully', success: true, response1, response2 });
     } catch (error) {
-        res.status(500).json({ message: 'Error occurred while deleting post', succes: false, error });
+        res.status(500).json({ message: 'Error occurred while deleting post', success: false, error });
     }
 });
 
 
-app.get('/api/engage-post', async (req, res) => {
+
+app.post('/api/like-post', async (req, res) => {
     try {
-        const itemData = req.body.key1;
-        console.log(itemData)
-        const items = await collection.find().toArray();
-        res.status(200).json(items);
+        const {postId, callingAccount, otherAccount, insert} = req.body
+        const objectId = new ObjectId(postId);
+        const query = await getPost(postId)
+        const post = query.success ? query: res.status(400).json({ message: 'Post not found' });
+        const isPublic = post.isPublic
+        const fieldToUpdate = isPublic ? "publicName": "anonymousName"
+        if(!areAllParametersValid({post, callingAccount, otherAccount})){
+            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
+        }
+        let response, response2;
+        if(insert){
+            response = await collection.updateOne({_id: objectId}, {$inc: {likes: 1}})
+            response2 = await collection.updateOne({[fieldToUpdate]: otherAccount}, {$inc: {engagments: 1}})
+        } else {
+            response = await collection.updateOne({_id: objectId}, {$dec: {likes: 1}})
+            response2 = await collection.updateOne({[fieldToUpdate]: otherAccount}, {$dec: {engagments: 1}})
+        }
+
+        res.status(200).json([response, response2]);
     } catch (error) {
         res.status(500).json({ message: 'Error occurred while fetching items', error });
     }
     
+});
+
+app.post('/api/comment-post', async (req, res) => {
+    try {
+        const {postId, callingAccount, otherAccount, insert, comment} = req.body
+        const objectId = new ObjectId(postId);
+        const query = await getPost(postId)
+        const post = query.success ? query: res.status(400).json({ message: 'Post not found' });
+        const isPublic = post.isPublic
+        const fieldToUpdate = isPublic ? "publicName": "anonymousName"
+        if(!areAllParametersValid({post, callingAccount, otherAccount})){
+            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
+        }
+        let response, response2;
+        if(insert){
+            response = await collection.updateOne({_id: objectId}, {$push: {comments: comment}})
+            response2 = await collection.updateOne({[fieldToUpdate]: otherAccount}, {$inc: {engagments: 1}})
+        } else {
+            response = await collection.updateOne({_id: objectId}, {$pull: {comments: comment}})
+            response2 = await collection.updateOne({[fieldToUpdate]: otherAccount}, {$dec: {engagments: 1}})
+        }
+
+        res.status(200).json([response, response2]);
+    } catch (error) {
+        res.status(500).json({ message: 'Error occurred while fetching items', error });
+    }
 });
 
 app.get('/api/search-account', async (req, res) => {
@@ -183,9 +240,10 @@ app.get('/api/search-account', async (req, res) => {
 app.post('/api/follow-unfollow', async (req, res) => {
     try {
         
-        const follow = req.body.follow;
-        const callingAccount = req.body.callingAccount;
-        const otherAccount = req.body.otherAccount;
+        const {follow, callingAccount, otherAccount} = req.body;
+        if(!areAllParametersValid({follow, callingAccount, otherAccount})){
+            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
+        }
 
         let response1, response2;
 
@@ -196,9 +254,8 @@ app.post('/api/follow-unfollow', async (req, res) => {
             response1 = await collection.updateOne({publicName: otherAccount}, {$pull: {followers: callingAccount}});
             response2 = await collection.updateOne({publicName: callingAccount}, {$pull: {following: otherAccount}});
         }
-        const items = [response1, response2]
-        console.log(items)
-        res.status(200).json(items);
+        
+        res.status(200).json([response1, response2]);
     } catch (error) {
         console.error('Error occurred:', error);
         res.status(500).json({ message: 'Error occurred while fetching items', error });
