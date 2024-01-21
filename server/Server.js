@@ -313,29 +313,50 @@ app.get('/api/search-account', async (req, res) => {
 
 app.post('/api/follow-unfollow', async (req, res) => {
     try {
-        
-        const {follow, callingAccount, otherAccount} = req.body;
-        if(!areAllParametersValid({follow, callingAccount, otherAccount})){
+        const { follow, callingAccount, otherAccount } = req.body;
+        if (!areAllParametersValid({ callingAccount, otherAccount })) {
             return res.status(400).json({ message: 'Missing or invalid parameters in request' });
         }
 
-        let response1, response2;
+        const otherAccountData = await accounts.findOne({ name: otherAccount }, { projection: { followers: 1 } });
 
-        if(follow){
-            response1 = await collection.updateOne({publicName: otherAccount}, {$push: {followers: callingAccount}});
-            response2 = await collection.updateOne({publicName: callingAccount}, {$push: {following: otherAccount}});
-        } else {
-            response1 = await collection.updateOne({publicName: otherAccount}, {$pull: {followers: callingAccount}});
-            response2 = await collection.updateOne({publicName: callingAccount}, {$pull: {following: otherAccount}});
+        if (!otherAccountData) {
+            return res.status(404).json({ message: 'Other account not found' });
         }
-        
-        res.status(200).json([response1, response2]);
+        const alreadyFollowing = otherAccountData.followers.includes(callingAccount);
+
+        if (alreadyFollowing && follow) {
+            return res.status(400).json({ message: 'Already following account' });
+        }
+
+        const updateOperation = follow ? '$push' : '$pull';
+        const update1 = await accounts.updateOne({ name: otherAccount }, { [updateOperation]: { followers: callingAccount } });
+
+        if (!update1.acknowledged || update1.modifiedCount === 0) {
+            throw new Error('Failed to update followers');
+        }
+
+        try {
+            const update2 = await accounts.updateOne({ name: callingAccount }, { [updateOperation]: { following: otherAccount } });
+            if (!update2.acknowledged || update2.modifiedCount === 0) {
+                // Rollback the first update
+                const rollbackOperation = follow ? '$pull' : '$push';
+                await accounts.updateOne({ name: otherAccount }, { [rollbackOperation]: { followers: callingAccount } });
+                throw new Error('Failed to update following');
+            }
+
+            res.status(200).json({ message: 'Update successful', follow, otherAccount, callingAccount });
+        } catch (update2Error) {
+            // If second update fails, log the error and send response
+            console.error('Error during second update:', update2Error);
+            res.status(500).json({ message: 'Error occurred during following update', error: update2Error.toString() });
+        }
     } catch (error) {
         console.error('Error occurred:', error);
-        res.status(500).json({ message: 'Error occurred while fetching items', error });
+        res.status(500).json({ message: 'Error occurred while updating accounts', error: error.toString() });
     }
-    
 });
+
 
 app.get('/api/load-posts', async (req, res) => {
     try {

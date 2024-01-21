@@ -88,5 +88,23 @@ async function getAccountInfo() {
     }
 }
 
-deletePost();
+async function followUnfollow(){
+    try {
+        const response = await axios.post('http://localhost:3000/api/follow-unfollow', {
+          follow: false,
+          callingAccount: "C",
+          otherAccount: "b0a617355deb1127"
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+    
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+      }
+}
+
+followUnfollow();
 
