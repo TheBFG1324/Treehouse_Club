@@ -250,66 +250,133 @@ app.post('/api/delete-post', async (req, res) => {
 
 app.post('/api/like-post', async (req, res) => {
     try {
-        const {postId, callingAccount, otherAccount, insert} = req.body
+        const { postId, callingAccount, otherAccount, insert } = req.body;
         const objectId = new ObjectId(postId);
-        const query = await getPost(postId)
-        const post = query ? query: res.status(400).json({ message: 'Post not found' });
-        if(!areAllParametersValid({post, callingAccount, otherAccount})){
-            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
-        }
-        let response, response2;
-        if(insert){
-            response = await posts.updateOne({_id: objectId}, {$inc: {likes: 1}})
-            response2 = await accounts.updateOne({[fieldToUpdate]: otherAccount}, {$inc: {engagments: 1}})
-        } else {
-            response = await posts.updateOne({_id: objectId}, {$dec: {likes: 1}})
-            response2 = await accounts.updateOne({[fieldToUpdate]: otherAccount}, {$dec: {engagments: 1}})
+        const postQuery = await getPost(postId);
+        const hasAccount1 = await checkHasAccount({ name: callingAccount });
+        const hasAccount2 = await checkHasAccount({ name: otherAccount });
+
+        if (!postQuery) {
+            return res.status(400).json({ message: 'Post not found' });
         }
 
-        res.status(200).json([response, response2]);
+        if (!areAllParametersValid({ postId, callingAccount, otherAccount })) {
+            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
+        }
+
+        if (!hasAccount1 || !hasAccount2) {
+            return res.status(400).json({ message: 'One or both of accounts are not found' });
+        }
+
+        const alreadyLiked = postQuery.likes.includes(callingAccount);
+        if ((insert && alreadyLiked) || (!insert && !alreadyLiked)) {
+            return res.status(400).json({ message: 'Invalid like operation' });
+        }
+
+        let postUpdateResponse = await posts.updateOne(
+            { _id: objectId }, 
+            insert ? { $push: { likes: callingAccount } } : { $pull: { likes: callingAccount } }
+        );
+
+        if (!postUpdateResponse || postUpdateResponse.modifiedCount === 0) {
+            throw new Error('Failed to update post');
+        }
+
+        try {
+            let accountUpdateResponse = await accounts.updateOne(
+                { name: otherAccount }, 
+                insert ? { $inc: { engagements: 1 } } : { $inc: { engagements: -1 } }
+            );
+
+            if (!accountUpdateResponse || accountUpdateResponse.modifiedCount === 0) {
+                // Rollback the post update if account update fails
+                await posts.updateOne(
+                    { _id: objectId }, 
+                    insert ? { $pull: { likes: callingAccount } } : { $push: { likes: callingAccount } }
+                );
+                throw new Error('Failed to update account');
+            }
+
+            res.status(200).json([postUpdateResponse, accountUpdateResponse]);
+        } catch (accountUpdateError) {
+            // Handle failure in updating account
+            throw accountUpdateError;
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Error occurred while fetching items', error });
+        res.status(500).json({ message: 'Error occurred while processing like operation', error: error.toString() });
     }
-    
 });
+
 
 app.post('/api/comment-post', async (req, res) => {
     try {
-        const {postId, callingAccount, otherAccount, insert, comment} = req.body
+        const { postId, callingAccount, otherAccount, insert, comment } = req.body;
         const objectId = new ObjectId(postId);
-        const query = await getPost(postId)
-        const post = query.success ? query: res.status(400).json({ message: 'Post not found' });
-        const isPublic = post.isPublic
-        const fieldToUpdate = isPublic ? "publicName": "anonymousName"
-        if(!areAllParametersValid({post, callingAccount, otherAccount})){
-            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
-        }
-        let response, response2;
-        if(insert){
-            response = await collection.updateOne({_id: objectId}, {$push: {comments: comment}})
-            response2 = await collection.updateOne({[fieldToUpdate]: otherAccount}, {$inc: {engagments: 1}})
-        } else {
-            response = await collection.updateOne({_id: objectId}, {$pull: {comments: comment}})
-            response2 = await collection.updateOne({[fieldToUpdate]: otherAccount}, {$dec: {engagments: 1}})
+        const postQuery = await getPost(postId);
+        const hasAccount1 = await checkHasAccount({ name: callingAccount });
+        const hasAccount2 = await checkHasAccount({ name: otherAccount });
+
+        if (!postQuery) {
+            return res.status(400).json({ message: 'Post not found' });
         }
 
-        res.status(200).json([response, response2]);
+        if (!areAllParametersValid({ postId, callingAccount, otherAccount, comment })) {
+            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
+        }
+
+        if (!hasAccount1 || !hasAccount2) {
+            return res.status(400).json({ message: 'One or both of accounts are not found' });
+        }
+
+        let postUpdateResponse = await posts.updateOne(
+            { _id: objectId }, 
+            insert ? { $push: { comments: comment } } : { $pull: { comments: comment } }
+        );
+
+        if (!postUpdateResponse || postUpdateResponse.modifiedCount === 0) {
+            throw new Error('Failed to update post');
+        }
+
+        try {
+            let accountUpdateResponse = await accounts.updateOne(
+                { name: otherAccount }, 
+                { $inc: { engagements: insert ? 1 : -1 } }
+            );
+
+            if (!accountUpdateResponse || accountUpdateResponse.modifiedCount === 0) {
+                // Rollback the post update if account update fails
+                await posts.updateOne(
+                    { _id: objectId }, 
+                    insert ? { $pull: { comments: comment } } : { $push: { comments: comment } }
+                );
+                throw new Error('Failed to update account');
+            }
+
+            res.status(200).json({ postUpdate: postUpdateResponse, accountUpdate: accountUpdateResponse });
+        } catch (accountUpdateError) {
+            throw accountUpdateError;
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Error occurred while fetching items', error });
+        res.status(500).json({ message: 'Error occurred while processing comment operation', error: error.toString() });
     }
 });
+
 
 app.get('/api/search-account', async (req, res) => {
     try {
-        const itemData = req.body.key1;
-        console.log(itemData)
-        const items = await collection.find().toArray();
-        res.status(200).json(items);
+
+        const { name } = req.query;
+        if (!name) {
+            return res.status(400).json({ message: 'Missing or invalid parameters in request' });
+        }
+        const queryRegex = new RegExp(name, 'i');
+        const foundAccounts = await accounts.find({ name: queryRegex }).sort({ "engagements": -1 }).toArray();
+        res.status(200).json(foundAccounts);
     } catch (error) {
         res.status(500).json({ message: 'Error occurred while fetching items', error });
     }
-    
 });
+
 
 app.post('/api/follow-unfollow', async (req, res) => {
     try {
