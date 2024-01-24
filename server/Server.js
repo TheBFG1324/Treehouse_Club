@@ -48,6 +48,10 @@ async function checkHasAccount(object){
     return  false
 }
 
+async function getAccount(object){
+    return await accounts.findOne(object)
+}
+
 async function getPost(postId){
     if (!ObjectId.isValid(postId)) {
         return false;
@@ -427,15 +431,47 @@ app.post('/api/follow-unfollow', async (req, res) => {
 
 app.get('/api/load-posts', async (req, res) => {
     try {
-        const itemData = req.body.key1;
-        console.log(itemData)
-        const items = await collection.find().toArray();
-        res.status(200).json(items);
+        // Assuming callingAccount and round are passed as query parameters
+        const { callingAccount, round } = req.query;
+        
+        if (!callingAccount || isNaN(round)) {
+            return res.status(400).json({ message: 'Missing or invalid parameters' });
+        }
+        
+        const roundNumber = parseInt(round, 10);
+        const hasAccount = await checkHasAccount({ name: callingAccount });
+        
+        if (!hasAccount) {
+            return res.status(404).json({ message: 'Account not found' });
+        }
+        
+        const account = await getAccount({ name: callingAccount });
+        const following = account.following;
+
+        let postIds = [];
+        for (const followerName of following) {
+            const followerAccount = await db.collection('accounts').findOne({ name: followerName });
+            if (followerAccount && followerAccount.posts) {
+                postIds = postIds.concat(followerAccount.posts);
+            }
+        }
+
+        const postsPerRound = 7;
+        const startIndex = roundNumber * postsPerRound;
+        const endIndex = startIndex + postsPerRound;
+
+        const posts = await db.collection('posts').find({ 
+            _id: { $in: postIds }
+        }).sort({ date: -1, engagements: -1 }).toArray();
+
+        const currentRoundPostIds = posts.slice(startIndex, endIndex).map(post => post._id);
+        res.status(200).json(currentRoundPostIds);
     } catch (error) {
-        res.status(500).json({ message: 'Error occurred while fetching items', error });
+        console.error('Error occurred:', error);
+        res.status(500).json({ message: 'Error occurred while fetching posts' });
     }
-    
 });
+
 
 const PORT = 3000; // You can choose any port
 app.listen(PORT, () => {
