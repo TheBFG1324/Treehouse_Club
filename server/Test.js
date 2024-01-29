@@ -1,5 +1,9 @@
 const axios = require('axios');
+const FormData = require('form-data');
+const fs = require('fs');
+const path = require('path');
 
+const serverUrl = 'http://localhost:3000';
 
 async function createAccount() {
     try {
@@ -157,5 +161,50 @@ async function searchAccount() {
         console.error('Error:', error.response ? error.response.data : error.message);
     }
 }
-searchAccount();
+
+async function uploadFile(filePath) {
+  const formData = new FormData();
+  formData.append('file', fs.createReadStream(filePath));
+  try {
+      const response = await axios.post(`${serverUrl}/api/upload`, formData, {
+          headers: {
+              ...formData.getHeaders(),
+          },
+      });
+      console.log("here")
+      console.log('File uploaded:', response.data);
+      return response.data.filename; // Assuming the response contains the filename
+  } catch (error) {
+      console.error('Error uploading file:', error.message);
+  }
+}
+
+async function getFile(filename) {
+  try {
+      const response = await axios.get(`${serverUrl}/api/file/${filename}`, { responseType: 'stream' });
+      const filePath = path.join(__dirname, filename);
+      const writer = fs.createWriteStream(filePath);
+
+      response.data.pipe(writer);
+
+      return new Promise((resolve, reject) => {
+          writer.on('finish', resolve);
+          writer.on('error', reject);
+      });
+  } catch (error) {
+      console.error('Error downloading file:', error.message);
+  }
+}
+
+async function testFileUploadAndDownload() {
+  const filePath = "./test2.jpeg"
+  const filename = await uploadFile(filePath);
+
+  if (filename) {
+      await getFile(filename);
+      console.log(`File downloaded: ${filename}`);
+  }
+}
+
+testFileUploadAndDownload();
 

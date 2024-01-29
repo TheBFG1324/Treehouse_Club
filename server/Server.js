@@ -1,8 +1,7 @@
 const express = require('express');
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient, ObjectId, GridFSBucket } = require('mongodb');
 const crypto = require('crypto');
-
-
+const multer = require('multer');
 
 
 const app = express();
@@ -15,10 +14,16 @@ let db;
 let googleIdMapping;
 let accounts;
 let posts;
+let gfs;
 
 MongoClient.connect(mongoUri)
     .then(client => {
+
         db = client.db(dbName);
+        gfs = new GridFSBucket(db, {
+            bucketName: 'uploads'
+        });
+
         accounts = db.collection('accounts');
         posts = db.collection('posts');
         googleIdMapping = db.collection('googleIdMapping');
@@ -27,6 +32,8 @@ MongoClient.connect(mongoUri)
     .catch(err => {
         console.error('Error connecting to MongoDB', err);
     });
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage })
 
 async function checkIsEnrolled(googleId){
 
@@ -471,6 +478,56 @@ app.get('/api/load-posts', async (req, res) => {
         res.status(500).json({ message: 'Error occurred while fetching posts' });
     }
 });
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    const uploadStream = gfs.openUploadStream(req.file.originalname, {
+        contentType: req.file.mimetype
+    });
+
+    uploadStream.end(req.file.buffer);
+
+    uploadStream.on('finish', (file) => {
+        // respond with the file information
+        res.status(201).send(file);
+    });
+
+    uploadStream.on('error', (error) => {
+        console.error('Stream error:', error);
+        res.status(500).json({ message: 'Error uploading file', error });
+    });
+});
+
+
+app.get('/api/file/:filename', (req, res) => {
+    const filename = req.params.filename;
+
+    gfs.find({ filename: filename }).toArray((err, files) => {
+        if (err) {
+            console.error('Error finding file:', err);
+            return res.sendStatus(500);
+        }
+        if (!files || files.length === 0) {
+            return res.status(404).send('File not found');
+        }
+
+        const file = files[0];
+
+        // If file exists, stream it
+        const readstream = gfs.openDownloadStream(file._id);
+        res.setHeader('Content-Type', file.contentType);
+        readstream.pipe(res);
+
+        readstream.on('error', (err) => {
+            console.error('Stream error:', err);
+            res.sendStatus(500);
+        });
+    });
+});
+
 
 
 const PORT = 3000; // You can choose any port
