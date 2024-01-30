@@ -492,7 +492,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 
     uploadStream.on('finish', (file) => {
         // respond with the file information
-        res.status(201).send(file);
+        res.status(201).send({ fileId: uploadStream.id });
     });
 
     uploadStream.on('error', (error) => {
@@ -502,31 +502,32 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 });
 
 
-app.get('/api/file/:filename', (req, res) => {
-    const filename = req.params.filename;
-
-    gfs.find({ filename: filename }).toArray((err, files) => {
-        if (err) {
-            console.error('Error finding file:', err);
-            return res.sendStatus(500);
-        }
-        if (!files || files.length === 0) {
-            return res.status(404).send('File not found');
-        }
-
-        const file = files[0];
-
-        // If file exists, stream it
-        const readstream = gfs.openDownloadStream(file._id);
-        res.setHeader('Content-Type', file.contentType);
-        readstream.pipe(res);
-
-        readstream.on('error', (err) => {
-            console.error('Stream error:', err);
-            res.sendStatus(500);
-        });
+app.get('/api/files/:id', (req, res) => {
+    const fileId = req.params.id;
+  
+    // Check if fileId is a valid MongoDB ObjectId
+    if (!ObjectId.isValid(fileId)) {
+      return res.status(400).send('Invalid file ID.');
+    }
+    const id = new ObjectId(fileId)
+    // Create a stream to download the file from GridFS
+    const downloadStream = gfs.openDownloadStream(id);
+  
+    res.setHeader('Content-Type', 'application/octet-stream');
+  
+    downloadStream.on('data', (chunk) => {
+      res.write(chunk);
     });
-});
+  
+    downloadStream.on('error', (error) => {
+      console.error('Stream error:', error);
+      res.status(404).send('File not found');
+    });
+  
+    downloadStream.on('end', () => {
+      res.end();
+    });
+  });
 
 
 

@@ -1,7 +1,6 @@
 const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
-const path = require('path');
 
 const serverUrl = 'http://localhost:3000';
 
@@ -171,39 +170,46 @@ async function uploadFile(filePath) {
               ...formData.getHeaders(),
           },
       });
-      console.log("here")
-      console.log('File uploaded:', response.data);
-      return response.data.filename; // Assuming the response contains the filename
+      return response.data.fileId; // Assuming the response contains the filename
   } catch (error) {
       console.error('Error uploading file:', error.message);
   }
 }
 
-async function getFile(filename) {
+async function downloadFile(fileId) {
   try {
-      const response = await axios.get(`${serverUrl}/api/file/${filename}`, { responseType: 'stream' });
-      const filePath = path.join(__dirname, filename);
-      const writer = fs.createWriteStream(filePath);
+    // Axios GET request to the file download API endpoint
+    const response = await axios({
+      method: 'GET',
+      url: `http://localhost:3000/api/files/${fileId}`,
+      responseType: 'stream' // This is important to handle the response as a stream
+    });
 
-      response.data.pipe(writer);
+    // Pipe the response stream directly into a file
+    const writer = fs.createWriteStream('downloadedFile');
 
-      return new Promise((resolve, reject) => {
-          writer.on('finish', resolve);
-          writer.on('error', reject);
-      });
+    response.data.pipe(writer);
+
+    return new Promise((resolve, reject) => {
+      writer.on('finish', resolve);
+      writer.on('error', reject);
+    });
   } catch (error) {
-      console.error('Error downloading file:', error.message);
+    console.error('Error downloading file:', error.message);
+    throw error; // Rethrow the error if you want to handle it later
   }
 }
 
 async function testFileUploadAndDownload() {
-  const filePath = "./test2.jpeg"
-  const filename = await uploadFile(filePath);
-
-  if (filename) {
-      await getFile(filename);
-      console.log(`File downloaded: ${filename}`);
+  const filePath = "/Users/camerondenton/Desktop/Treehouse Club /treehouseclub/server/test2.jpeg"
+  const fileId = await uploadFile(filePath);
+  console.log(fileId)
+  if(fileId){
+    await downloadFile(fileId)
+    .then(() => console.log('File downloaded successfully.'))
+    .catch(error => console.error('File download failed:', error));
   }
+
 }
 
 testFileUploadAndDownload();
