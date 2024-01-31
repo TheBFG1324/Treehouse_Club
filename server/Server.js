@@ -78,10 +78,10 @@ function areAllParametersValid(params) {
 }
 app.post('/api/create-account', async (req, res) => {
     try {
-        const { googleId, email, publicName, profileImage } = req.body;
+        const { googleId, email, publicName, profileImage, imageType } = req.body;
         const anonymousName = crypto.createHash('sha256').update(publicName).digest('hex').slice(24, 40);
 
-        if (!areAllParametersValid({ googleId, email, publicName, profileImage })) {
+        if (!areAllParametersValid({ googleId, email, publicName, profileImage, imageType })) {
             return res.status(400).json({ message: 'Missing or invalid parameters in request' });
         }
 
@@ -109,6 +109,7 @@ app.post('/api/create-account', async (req, res) => {
             email: email,
             name: anonymousName,
             profileImage: profileImage,
+            imageType: imageType,
             posts: [],
             followers: [],
             following: [],
@@ -162,9 +163,9 @@ app.get('/api/get-account-info', async (req, res) => {
 
 app.post('/api/create-post', async (req, res) => {
     try {
-        const { title, name, postImage, post, googleId } = req.body;
+        const { title, name, postImage, post, googleId, postType, imageType } = req.body;
 
-        if (!areAllParametersValid({ title, name, postImage, post, googleId })) {
+        if (!areAllParametersValid({ title, name, postImage, post, googleId, postType, imageType })) {
             return res.status(400).json({ message: 'Missing or invalid parameters in request' });
         }
 
@@ -178,7 +179,9 @@ app.post('/api/create-post', async (req, res) => {
             ownerId: googleId,
             title: title,
             post: post,
+            postType: postType,
             postImage: postImage,
+            imageType: imageType,
             date: new Date(),
             likes: [],
             comments: []
