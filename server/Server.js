@@ -2,10 +2,13 @@ const express = require('express');
 const { MongoClient, ObjectId, GridFSBucket } = require('mongodb');
 const crypto = require('crypto');
 const multer = require('multer');
-
+const cors = require('cors');
 
 const app = express();
 app.use(express.json()); 
+app.use(cors({
+    origin: 'http://localhost:3000' // Replace with your React app's URL
+}));
 
 const mongoUri = 'mongodb://127.0.0.1:27017/testDB'; // Simplified MongoDB URI
 const dbName = 'testDB';
@@ -76,6 +79,26 @@ async function getPost(postId){
 function areAllParametersValid(params) {
     return Object.values(params).every(param => param);
 }
+
+app.get('/api/google-id-enrolled', async (req, res) => {
+    try {
+        const { googleId } = req.query;
+        if (!googleId) {
+            return res.status(400).json({ message: 'Missing name parameter' });
+        }
+        const r = await checkIsEnrolled(googleId)
+        console.log(r)
+        const result = await googleIdMapping.findOne({googleId: googleId})
+        if (result) {
+            res.status(200).json({enrolled: true, result: result[0]});
+        } else {
+            res.status(200).json({ enrolled: false });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error occurred while fetching items', error });
+    }
+});
+
 app.post('/api/create-account', async (req, res) => {
     try {
         const { googleId, email, publicName, profileImage, imageType } = req.body;
@@ -534,7 +557,7 @@ app.get('/api/files/:id', (req, res) => {
 
 
 
-const PORT = 3000; // You can choose any port
+const PORT = 4000; // You can choose any port
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
