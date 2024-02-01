@@ -30,7 +30,7 @@ function App() {
 
   // Check if the user is not logged in
   if (!googleID) {
-    return <Login onSuccess={loginSuccess} onError={errorMessage} setUser={setUser} />;
+    return <Login onSuccess={loginSuccess} onError={errorMessage} setUser={setUser}/>;
   }
 
   // Content to render when the user is logged in

@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
+import CryptoJS from 'crypto-js';
 import { GoogleLogin } from '@react-oauth/google';
 import "./css/Login.css";
 import { jwtDecode } from "jwt-decode";
+import googleIdEnrolled from '../Api-Functions/googleIdEnrolled';
+import sendFile from '../Api-Functions/sendFile';
+import createAccount from '../Api-Functions/createAccount';
 
 function Login(props) {
     const [showCreateAccount, setShowCreateAccount] = useState(false);
-    const [userData, setUserData] = useState({ googleId: '', email: '', accountName: '', accountPicture: null });
+    const [userData, setUserData] = useState({ googleId: '', email: '', accountName: '', accountPicture: null, pictureType: '' });
 
-    const handleLoginSuccess = (response) => {
-        const credential = response.credential
+    const handleLoginSuccess = async (response) => {
         const email = jwtDecode(response.credential).email
-        console.log(credential)
+        const googleId1 = CryptoJS.SHA256(email).toString(CryptoJS.enc.Hex)
+        const googleId = CryptoJS.SHA256(googleId1).toString(CryptoJS.enc.Hex)
+        console.log(googleId)
         console.log(email)
-        if(true){
+        const hasAccount = await googleIdEnrolled(googleId)
+        console.log(hasAccount)
+        if(!hasAccount.enrolled){
             setShowCreateAccount(true)
         }
         else {
             setShowCreateAccount(false)
+            props.onSuccess(googleId)
         }
 
-        setUserData({ ...userData, googleId: credential, email: email });
+        setUserData({ ...userData, googleId: googleId, email: email });
     };
 
     const handleInputChange = (event) => {
@@ -27,12 +35,26 @@ function Login(props) {
     };
 
     const handleFileChange = (event) => {
-        setUserData({ ...userData, accountPicture: event.target.files[0] });
+        setUserData({ ...userData, accountPicture: event.target.files[0], pictureType: event.target.files[0].type});
     };
 
-    const handleCreateAccount = () => {
-        props.onSuccess(userData.googleId)
-        props.setUser("TheBFG1324")
+    const handleCreateAccount = async () => {
+        const fileId = await sendFile(userData.accountPicture)
+        if(fileId){
+            const data = {
+                googleId: userData.googleId,
+                email: userData.email,
+                publicName: userData.accountName,
+                profileImage: fileId,
+                imageType: userData.pictureType
+
+            }
+            const result = await createAccount(data)
+            if(result.enrollId){
+                props.onSuccess(userData.googleId)
+                props.setUser(userData.accountName)
+            }
+        }
     };
 
     return (
