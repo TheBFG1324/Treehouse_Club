@@ -42,7 +42,7 @@ function App() {
       {activePage === "About" && <About />}
       {activePage === "Feed" && <Feed />}
       {activePage === "Search" && <Search />}
-      {activePage === "Account" && <Account user={account} />}
+      {activePage === "Account" && <Account user={account} googleId={googleID} />}
     </div>
   );
 }

@@ -12,13 +12,10 @@ function Login(props) {
     const [userData, setUserData] = useState({ googleId: '', email: '', accountName: '', accountPicture: null, pictureType: '' });
 
     const handleLoginSuccess = async (response) => {
-        const email = jwtDecode(response.credential).email
-        const googleId1 = CryptoJS.SHA256(email).toString(CryptoJS.enc.Hex)
-        const googleId = CryptoJS.SHA256(googleId1).toString(CryptoJS.enc.Hex)
-        console.log(googleId)
-        console.log(email)
+        const decodedToken = jwtDecode(response.credential)
+        const email = decodedToken.email
+        const googleId = CryptoJS.SHA256(decodedToken.sub).toString();
         const hasAccount = await googleIdEnrolled(googleId)
-        console.log(hasAccount)
         if(!hasAccount.enrolled){
             setShowCreateAccount(true)
         }

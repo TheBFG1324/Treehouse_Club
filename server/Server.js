@@ -86,8 +86,6 @@ app.get('/api/google-id-enrolled', async (req, res) => {
         if (!googleId) {
             return res.status(400).json({ message: 'Missing name parameter' });
         }
-        const r = await checkIsEnrolled(googleId)
-        console.log(r)
         const result = await googleIdMapping.findOne({googleId: googleId})
         if (result) {
             res.status(200).json({enrolled: true, result: result[0]});
