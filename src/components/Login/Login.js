@@ -22,6 +22,8 @@ function Login(props) {
         else {
             setShowCreateAccount(false)
             props.onSuccess(googleId)
+            props.setUser(hasAccount.result.accounts[0])
+            props.setAnonymousUser(hasAccount.result.accounts[1])
         }
 
         setUserData({ ...userData, googleId: googleId, email: email });

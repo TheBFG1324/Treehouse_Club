@@ -10,6 +10,7 @@ import Login from './components/Login/Login';
 function App() {
   const [activePage, setActivePage] = useState('About');
   const [account, setAccount] = useState(null);
+  const [anonymousAccount, setAnonymousAccount] = useState(null)
   const [googleID, setGoogleID] = useState(null);
 
   const handlePageChange = (page) => {
@@ -28,12 +29,14 @@ function App() {
     setAccount(account)
   }
 
-  // Check if the user is not logged in
-  if (!googleID) {
-    return <Login onSuccess={loginSuccess} onError={errorMessage} setUser={setUser}/>;
+  const setAnonymousUser = (account) => {
+    setAnonymousAccount(account)
   }
 
-  // Content to render when the user is logged in
+  if (!googleID) {
+    return <Login onSuccess={loginSuccess} onError={errorMessage} setUser={setUser} setAnonymousUser={setAnonymousUser}/>;
+  }
+
   return (
     <div>
       <div className='Top'>
@@ -42,7 +45,7 @@ function App() {
       {activePage === "About" && <About />}
       {activePage === "Feed" && <Feed />}
       {activePage === "Search" && <Search />}
-      {activePage === "Account" && <Account user={account} googleId={googleID} />}
+      {activePage === "Account" && <Account user={account} anonymousUser={anonymousAccount} googleId={googleID} />}
     </div>
   );
 }

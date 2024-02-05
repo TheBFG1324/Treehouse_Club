@@ -2,10 +2,39 @@ import React, { useState, useEffect } from 'react';
 import './css/Account.css';
 import AccountTemplatePost from './AccountTemplatePost';
 import AccountButtons from './AccountButtons';
-import CryptoJS from 'crypto-js';
 import PostView from '../General/ViewPost';
+import getAccountInfo from '../Api-Functions/getAccountInfo'
 
 function Account(props) {
+    const publicName = props.user;
+    const anonymousName = "0x" + props.anonymousUser
+    
+    const [publicPostCount, setPublicPostCount] = useState(0);
+    const [privatePostCount, setPrivatePostCount] = useState(0);
+    const [followers, setFollowers] = useState(0);
+    const [following, setFollowing] = useState(0);
+    const [publicEngagement, setPublicEngagement] = useState(0);
+    const [privateEngagement, setPrivateEngagement] = useState(0);
+
+    
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const pubProfileInfo = await getAccountInfo(props.user);
+                const anonymousProfileInfo = await getAccountInfo(props.anonymousUser);
+                setPublicPostCount(pubProfileInfo.posts.length);
+                setPrivatePostCount(anonymousProfileInfo.posts.length);
+                setFollowers(pubProfileInfo.followers.length);
+                setFollowing(anonymousProfileInfo.following.length);
+                setPublicEngagement(pubProfileInfo.engagements);
+                setPrivateEngagement(anonymousProfileInfo.engagements);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    }, [props.publicName, props.anonymousUser]); // Dependencies for useEffect
 
     let post = {
         account: "TheBFG1324",
@@ -24,15 +53,7 @@ function Account(props) {
 
     const publicPosts = new Array(6).fill(post); // Create an array of posts
     const anonymousPosts = new Array(3).fill(post);
-    const publicName = props.user;
-    const anonymousName = "0x" + CryptoJS.SHA256(publicName).toString().slice(0, 16);
     const profilePicture = "test2.jpeg"; // Ensure this path is correct and accessible
-    const publicPostCount = publicPosts.length
-    const privatePostCount = anonymousPosts.length
-    const followers = 170;
-    const following = 190;
-    const publicEngagement = 789;
-    const privateEngagement = 230;
 
     const [accountUser, setAccount] = useState(props.user);
     const [Public, setPublic] = useState(true);
@@ -41,10 +62,6 @@ function Account(props) {
     const toggleAccountChange = () => {
         setPublic(!Public);
     };
-
-    useEffect(() => {
-        setAccount(props.user);
-    }, [props.user]);
 
     const selectPost = (post) => {
         setSelectedPost(post);
