@@ -88,7 +88,7 @@ app.get('/api/google-id-enrolled', async (req, res) => {
         }
         const result = await googleIdMapping.findOne({googleId: googleId})
         if (result) {
-            res.status(200).json({enrolled: true, result: result[0]});
+            res.status(200).json({enrolled: true, result: result});
         } else {
             res.status(200).json({ enrolled: false });
         }
