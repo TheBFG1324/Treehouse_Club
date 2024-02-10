@@ -4,10 +4,13 @@ import AccountTemplatePost from './AccountTemplatePost';
 import AccountButtons from './AccountButtons';
 import PostView from '../General/ViewPost';
 import getAccountInfo from '../Api-Functions/getAccountInfo'
+import getFile from '../Api-Functions/getFile';
+
 
 function Account(props) {
     const publicName = props.user;
     const anonymousName = "0x" + props.anonymousUser
+    const googleId = props.googleId
     
     const [publicPostCount, setPublicPostCount] = useState(0);
     const [privatePostCount, setPrivatePostCount] = useState(0);
@@ -15,19 +18,27 @@ function Account(props) {
     const [following, setFollowing] = useState(0);
     const [publicEngagement, setPublicEngagement] = useState(0);
     const [privateEngagement, setPrivateEngagement] = useState(0);
+    const [profilePictureURL, setProfilePictureURL] = useState(null);
+    const [publicPostIds, setPublicPostIds] = useState([]);
+    const [anonymousPostIds, setAnonymousPostIds] = useState([])
 
-    
     useEffect(() => {
         async function fetchData() {
             try {
                 const pubProfileInfo = await getAccountInfo(props.user);
                 const anonymousProfileInfo = await getAccountInfo(props.anonymousUser);
-                setPublicPostCount(pubProfileInfo.posts.length);
-                setPrivatePostCount(anonymousProfileInfo.posts.length);
+                const profilePictureId = pubProfileInfo.profileImage;
+                const pic = await getFile(profilePictureId)
+                const imageURL = URL.createObjectURL(pic);
                 setFollowers(pubProfileInfo.followers.length);
-                setFollowing(anonymousProfileInfo.following.length);
+                setFollowing(pubProfileInfo.following.length);
+                setProfilePictureURL(imageURL)
+                setPublicPostIds(pubProfileInfo.posts)
+                setPublicPostCount(pubProfileInfo.posts.length);
                 setPublicEngagement(pubProfileInfo.engagements);
                 setPrivateEngagement(anonymousProfileInfo.engagements);
+                setAnonymousPostIds(anonymousProfileInfo.posts);
+                setPrivatePostCount(anonymousProfileInfo.posts.length);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -51,10 +62,6 @@ function Account(props) {
         profilePicture: "test2.jpeg"
     };
 
-    const publicPosts = new Array(6).fill(post); // Create an array of posts
-    const anonymousPosts = new Array(3).fill(post);
-    const profilePicture = "test2.jpeg"; // Ensure this path is correct and accessible
-
     const [accountUser, setAccount] = useState(props.user);
     const [Public, setPublic] = useState(true);
     const [selectedPost, setSelectedPost] = useState(null);
@@ -75,7 +82,7 @@ function Account(props) {
         <div className='account-container'>
             <div className='account-header'>
                 <div className='profile-section'>
-                    <img src={Public ? profilePicture : "Treehouse1.png"} alt="profile pic" className="circle-image"/>
+                    <img src={Public ? profilePictureURL : "Treehouse1.png"} alt="profile pic" className="circle-image"/>
                     <h1 className='profile-name-account'>{Public ? publicName : anonymousName}</h1>
                 </div>
                 <div className='account-info-buttons'>
@@ -98,15 +105,15 @@ function Account(props) {
                         </div>
                     </div>
                     <div className='account-buttons'>
-                        <AccountButtons account={accountUser} changeAccount={toggleAccountChange} />
+                        <AccountButtons account={accountUser} changeAccount={toggleAccountChange} googleId={googleId} publicName={props.user} anonymousName={props.anonymousUser} />
                     </div>
                 </div>
             </div>
             <div className='account-posts'>
-                {Public ? publicPosts.map((post, index) => (
-                    <AccountTemplatePost key={index} postInfo={post} onClick={selectPost}/>
-                )) : anonymousPosts.map((post, index) => (
-                    <AccountTemplatePost key={index} postInfo={post} onClick={selectPost}/>
+                {Public ? publicPostIds.map((postId, index) => (
+                    <AccountTemplatePost key={index} postId={postId} onClick={selectPost}/>
+                )) : anonymousPostIds.map((postId, index) => (
+                    <AccountTemplatePost key={index} postId={postId} onClick={selectPost}/>
                 ))}
             </div>
             {selectedPost && (

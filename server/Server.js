@@ -119,6 +119,7 @@ app.post('/api/create-account', async (req, res) => {
             email: email,
             name: publicName,
             profileImage: profileImage,
+            imageType: imageType,
             posts: [],
             followers: [],
             following: [],
@@ -129,8 +130,6 @@ app.post('/api/create-account', async (req, res) => {
             googleId: googleId,
             email: email,
             name: anonymousName,
-            profileImage: profileImage,
-            imageType: imageType,
             posts: [],
             followers: [],
             following: [],
@@ -185,7 +184,7 @@ app.get('/api/get-account-info', async (req, res) => {
 app.post('/api/create-post', async (req, res) => {
     try {
         const { title, name, postImage, post, googleId, postType, imageType } = req.body;
-
+  
         if (!areAllParametersValid({ title, name, postImage, post, googleId, postType, imageType })) {
             return res.status(400).json({ message: 'Missing or invalid parameters in request' });
         }
@@ -229,7 +228,7 @@ app.post('/api/create-post', async (req, res) => {
 
 app.get('/api/get-post', async (req, res) => {
     try {
-        console.log(req.query)
+
         const {postId} = req.query;
         
         if(!postId){
