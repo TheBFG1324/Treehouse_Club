@@ -1,0 +1,28 @@
+/* FollowButton.css */
+
+.followButton {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc; /* Thin line border */
+    border-radius: 0; /* No rounded corners to match your style */
+    background-color: transparent; /* Transparent background initially */
+    color: #333; /* Dark text color */
+    font-size: 1em;
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for background and border color */
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+.followButton:hover {
+    background-color: #f6ba6b; /* Orange background on hover */
+    border-color: #bbbbbb00; /* Transparent border on hover */
+}
+
+.followButton.unfollow {
+    background-color: #1eb7e1; /* Red background for unfollow */
+    color: white; /* White text for contrast */
+}
+
+.followButton.unfollow:hover {
+    background-color: #e15c5c; /* Darker red on hover */
+    border-color: transparent; /* Maintain transparent border on hover */
+}

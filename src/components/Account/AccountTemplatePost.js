@@ -11,15 +11,11 @@ function AccountTemplatePost(props) {
             try {
                 const response = await getPost(props.postId);
                 const postData = response.post
-                console.log(postData)
                 if (postData && response.success) {
-                    console.log("here")
                     const coverPhoto = await getFile(postData.postImage)
                     const imageURL = URL.createObjectURL(coverPhoto);
-                    console.log(imageURL)
                     setImageURL(imageURL)
                     setPost(postData);
-
                 }
             } catch (error) {
                 console.error('Error fetching post:', error);

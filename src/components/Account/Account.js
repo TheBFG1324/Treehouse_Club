@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './css/Account.css';
 import AccountTemplatePost from './AccountTemplatePost';
+import FollowButton from './FollowButton';
 import AccountButtons from './AccountButtons';
 import PostView from '../General/ViewPost';
 import getAccountInfo from '../Api-Functions/getAccountInfo'
@@ -8,6 +9,8 @@ import getFile from '../Api-Functions/getFile';
 
 
 function Account(props) {
+    console.log(props.isHomeUser)
+    const isHomeUser = props.isHomeUser
     const publicName = props.user;
     const anonymousName = "0x" + props.anonymousUser
     const googleId = props.googleId
@@ -47,22 +50,6 @@ function Account(props) {
         fetchData();
     }, [props.publicName, props.anonymousUser]); // Dependencies for useEffect
 
-    let post = {
-        account: "TheBFG1324",
-        post: 'OdeToYes.pdf',
-        postImage: "dec.jpeg",
-        title: "Ode To Yes",
-        date: "10/25/23",
-        likes: 16,
-        comments: {
-            "Sally": "Good job Tim",
-            "Bob": "Fuck you Tim"
-        },
-        commentsCount: 2,
-        profilePicture: "test2.jpeg"
-    };
-
-    const [accountUser, setAccount] = useState(props.user);
     const [Public, setPublic] = useState(true);
     const [selectedPost, setSelectedPost] = useState(null);
 
@@ -105,7 +92,8 @@ function Account(props) {
                         </div>
                     </div>
                     <div className='account-buttons'>
-                        <AccountButtons account={accountUser} changeAccount={toggleAccountChange} googleId={googleId} publicName={props.user} anonymousName={props.anonymousUser} />
+                        {isHomeUser && <AccountButtons account={publicName} changeAccount={toggleAccountChange} googleId={googleId} publicName={props.user} anonymousName={props.anonymousUser} />}
+                        {!isHomeUser && <FollowButton callingAccount={publicName} otherAccount={publicName} />}
                     </div>
                 </div>
             </div>
