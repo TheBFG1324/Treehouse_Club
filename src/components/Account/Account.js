@@ -9,7 +9,6 @@ import getFile from '../Api-Functions/getFile';
 
 
 function Account(props) {
-    console.log(props.isHomeUser)
     const isHomeUser = props.isHomeUser
     const publicName = props.user;
     const anonymousName = "0x" + props.anonymousUser

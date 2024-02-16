@@ -506,7 +506,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
-
+    
     const uploadStream = gfs.openUploadStream(req.file.originalname, {
         contentType: req.file.mimetype
     });
@@ -552,6 +552,41 @@ app.get('/api/files/:id', (req, res) => {
     });
   });
 
+  app.get('/api/pdf/:id', async (req, res) => {
+    try {
+        const fileId = req.params.id;
+
+        // Check if fileId is a valid MongoDB ObjectId
+        if (!ObjectId.isValid(fileId)) {
+            return res.status(400).send('Invalid file ID.');
+        }
+
+        const id = new ObjectId(fileId);
+
+        // Retrieve file information from GridFS
+        const files = await gfs.find({ _id: id }).toArray();
+        if (!files[0] || files.length === 0) {
+            return res.status(404).send('No file found');
+        }
+
+        // Set the content type for the response
+        let contentType = files[0].contentType;
+        res.setHeader('Content-Type', contentType);
+
+        // Create a stream to download the file from GridFS
+        const downloadStream = gfs.openDownloadStream(id);
+
+        // Use pipe to directly stream the file
+        downloadStream.pipe(res).on('error', (error) => {
+            console.error('Stream error:', error);
+            res.status(500).send('Error streaming file');
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 const PORT = 4000; // You can choose any port

@@ -165,7 +165,7 @@ async function uploadFile(filePath) {
   const formData = new FormData();
   formData.append('file', fs.createReadStream(filePath));
   try {
-      const response = await axios.post(`${serverUrl}/api/upload`, formData, {
+      const response = await axios.post(`http://localhost:4000/api/upload`, formData, {
           headers: {
               ...formData.getHeaders(),
           },
@@ -181,7 +181,7 @@ async function downloadFile(fileId) {
     // Axios GET request to the file download API endpoint
     const response = await axios({
       method: 'GET',
-      url: `http://localhost:3000/api/files/${fileId}`,
+      url: `http://localhost:4000/api/pdf/${fileId}`,
       responseType: 'stream' // This is important to handle the response as a stream
     });
 
