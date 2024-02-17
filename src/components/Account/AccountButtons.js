@@ -58,6 +58,7 @@ function AccountButtons(props) {
             console.log(post)
         }
         setShowForm(false);
+        props.toggleReload()
     };
 
     const handleChange = (e) => {

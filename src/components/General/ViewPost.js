@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./css/ViewPost.css"
 import getPdf from "../Api-Functions/getPdf";
-import getFile from "../Api-Functions/getFile";
+import deletePost from "../Api-Functions/deletePost";
 
 function PostView(props){
     const user = props.user;
@@ -33,12 +33,31 @@ function PostView(props){
         fetchData()
     }, [props.user, props.postInfo])
 
+    const postBeGone = async () => {
+        const result = await deletePost(post._id)
+        if(result && result.message){
+            props.onClick()
+            props.toggleReload(prev => !prev);
+        }
+        else {
+            console.log("Error deleting post")
+        }
+    }
+
+    const commentPost = (postID) => {
+
+    }
+
+    const likePost = (postID) => {
+
+    }
+
     return(
         <div className="PostView-container">
             <div className="post-title">
                 <h1>{title}</h1>
                 <div className="button-container">
-                    {user === postOwner && <button className="delete-button" onClick={() => {/* handle delete */}}>Delete</button>}
+                    {user === postOwner && <button className="delete-button" onClick={postBeGone}>Delete</button>}
                     <button className="close-button" onClick={props.onClick}>X</button>
                 </div>
             </div>
