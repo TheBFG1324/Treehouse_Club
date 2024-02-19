@@ -93,7 +93,7 @@ function Account(props) {
                     </div>
                     <div className='account-buttons'>
                         {isHomeUser && <AccountButtons account={publicName} changeAccount={toggleAccountChange} googleId={googleId} publicName={props.user} anonymousName={props.anonymousUser} toggleReload={toggleReload} />}
-                        {!isHomeUser && <FollowButton callingAccount={publicName} otherAccount={publicName} />}
+                        {!isHomeUser && <FollowButton callingAccountGoogleId={googleId} otherAccountGoogleId={googleId} callingAccount={publicName} otherAccount={publicName}/>}
                     </div>
                 </div>
             </div>

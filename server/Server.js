@@ -414,49 +414,66 @@ app.get('/api/search-account', async (req, res) => {
 
 app.post('/api/follow-unfollow', async (req, res) => {
     try {
-        const { follow, callingAccount, otherAccount } = req.body;
-        if (!areAllParametersValid({ callingAccount, otherAccount })) {
+        const { follow, callingAccountGoogleId, otherAccountGoogleId } = req.body;
+        if (!areAllParametersValid({ callingAccountGoogleId, otherAccountGoogleId })) {
             return res.status(400).json({ message: 'Missing or invalid parameters in request' });
         }
 
-        const otherAccountData = await accounts.findOne({ name: otherAccount }, { projection: { followers: 1 } });
+        // Retrieve associated accounts for callingAccountGoogleId and otherAccountGoogleId
+        const callingAccountsData = await googleIdMapping.findOne({ googleId: callingAccountGoogleId });
+        const otherAccountsData = await googleIdMapping.findOne({ googleId: otherAccountGoogleId });
 
-        if (!otherAccountData) {
-            return res.status(404).json({ message: 'Other account not found' });
-        }
-        const alreadyFollowing = otherAccountData.followers.includes(callingAccount);
-
-        if (alreadyFollowing && follow) {
-            return res.status(400).json({ message: 'Already following account' });
+        if (!callingAccountsData || !otherAccountsData) {
+            return res.status(404).json({ message: 'Google ID mapping not found' });
         }
 
-        const updateOperation = follow ? '$push' : '$pull';
-        const update1 = await accounts.updateOne({ name: otherAccount }, { [updateOperation]: { followers: callingAccount } });
+        const callingAccounts = callingAccountsData.accounts;
+        const otherAccounts = otherAccountsData.accounts;
 
-        if (!update1.acknowledged || update1.modifiedCount === 0) {
-            throw new Error('Failed to update followers');
-        }
+        // Loop through each combination of callingAccounts and otherAccounts
+        for (const callingAccount of callingAccounts) {
+            for (const otherAccount of otherAccounts) {
+                const otherAccountData = await accounts.findOne({ name: otherAccount }, { projection: { followers: 1 } });
 
-        try {
-            const update2 = await accounts.updateOne({ name: callingAccount }, { [updateOperation]: { following: otherAccount } });
-            if (!update2.acknowledged || update2.modifiedCount === 0) {
-                // Rollback the first update
-                const rollbackOperation = follow ? '$pull' : '$push';
-                await accounts.updateOne({ name: otherAccount }, { [rollbackOperation]: { followers: callingAccount } });
-                throw new Error('Failed to update following');
+                if (!otherAccountData) {
+                    continue; // Skip if other account not found
+                }
+
+                const alreadyFollowing = otherAccountData.followers.includes(callingAccount);
+                if (alreadyFollowing && follow) {
+                    continue; // Skip if already following and trying to follow again
+                }
+
+                const updateOperation = follow ? '$push' : '$pull';
+                const update1 = await accounts.updateOne({ name: otherAccount }, { [updateOperation]: { followers: callingAccount } });
+
+                if (!update1.acknowledged || update1.modifiedCount === 0) {
+                    throw new Error('Failed to update followers');
+                }
+
+                try {
+                    const update2 = await accounts.updateOne({ name: callingAccount }, { [updateOperation]: { following: otherAccount } });
+                    if (!update2.acknowledged || update2.modifiedCount === 0) {
+                        // Rollback the first update
+                        const rollbackOperation = follow ? '$pull' : '$push';
+                        await accounts.updateOne({ name: otherAccount }, { [rollbackOperation]: { followers: callingAccount } });
+                        throw new Error('Failed to update following');
+                    }
+                } catch (update2Error) {
+                    // If second update fails, log the error and continue to next iteration
+                    console.error('Error during second update for account', callingAccount, 'following', otherAccount, ':', update2Error);
+                    continue;
+                }
             }
-
-            res.status(200).json({ message: 'Update successful', follow, otherAccount, callingAccount });
-        } catch (update2Error) {
-            // If second update fails, log the error and send response
-            console.error('Error during second update:', update2Error);
-            res.status(500).json({ message: 'Error occurred during following update', error: update2Error.toString() });
         }
+
+        res.status(200).json({ message: 'Update successful', follow, otherAccountGoogleIds: otherAccounts, callingAccountGoogleIds: callingAccounts });
     } catch (error) {
         console.error('Error occurred:', error);
         res.status(500).json({ message: 'Error occurred while updating accounts', error: error.toString() });
     }
 });
+
 
 
 app.get('/api/load-posts', async (req, res) => {

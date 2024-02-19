@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-async function followUnfollow(follow, callingAccount, otherAccount) {
+async function followUnfollow(follow, callingAccountGoogleId, otherAccountGoogleId) {
     try {
         const data = {
             follow,
-            callingAccount,
-            otherAccount
+            callingAccountGoogleId,
+            otherAccountGoogleId
         };
 
         const response = await axios.post('http://localhost:4000/api/follow-unfollow', data);

@@ -7,6 +7,8 @@ function FollowButton(props) {
     const [isFollowing, setIsFollowing] = useState(false);
     const [follow, setFollow] = useState(true);
 
+    const callingAccountGoogleId = props.callingAccountGoogleId;
+    const otherAccountGoogleId = props.otherAccountGoogleId;
     const callingAccount = props.callingAccount;
     const otherAccount = props.otherAccount;
 
@@ -33,7 +35,7 @@ function FollowButton(props) {
 
     const handleClick = async () => {
         try {
-            const result = await FollowUnfollow(follow, callingAccount, otherAccount);
+            const result = await FollowUnfollow(follow, callingAccountGoogleId, otherAccountGoogleId);
             console.log(result);
             if (result && result.message) {
                 setIsFollowing(!isFollowing);
@@ -43,14 +45,6 @@ function FollowButton(props) {
             console.error('Error in follow/unfollow operation:', error);
         }
     };
-
-    // Example getData function (replace with your actual API call)
-    async function getData(account) {
-        // Perform the API call to fetch user data
-        console.log('Fetching data for account:', account);
-        // Mock response for demonstration
-        return { following: ['exampleAccount1', 'exampleAccount2'] };
-    }
 
     return (
         <button 
