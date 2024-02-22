@@ -3,6 +3,8 @@ import "./css/ViewPost.css";
 import getPdf from "../Api-Functions/getPdf";
 import deletePost from "../Api-Functions/deletePost";
 import commentPost from "../Api-Functions/commentPost";
+import likePost from "../Api-Functions/likePost";
+import getPost from "../Api-Functions/getPost";
 
 function PostView(props) {
     const user = props.user;
@@ -16,6 +18,7 @@ function PostView(props) {
     const [comments, setComments] = useState([]);
     const [commentBoxVisible, setCommentBoxVisible] = useState(false);
     const [newComment, setNewComment] = useState('');
+    const [newLike, setNewLike] = useState(!post.likes.includes(user))
 
     useEffect(() => {
         async function fetchData() {
@@ -46,6 +49,24 @@ function PostView(props) {
         }
     }
 
+    const handlePostLike = async () => {
+        try {
+            const response = await likePost(post._id, props.user, postOwner, newLike);
+
+            if (response && response[0]) {
+                const update = await getPost(post._id)
+                console.log(update)
+                setLikes(update.post.likes.length);
+                setNewLike(!newLike);
+            } else {
+                console.log("Like operation failed", response.message);
+            }
+        } catch (error) {
+            console.error("Error in liking the post", error);
+        }
+    }
+    
+
     const handleCommentButtonClick = () => {
         setCommentBoxVisible(true);
     }
@@ -56,6 +77,10 @@ function PostView(props) {
 
     const submitComment = async () => {
         const result = await commentPost(post._id, props.user, postOwner, true, {name: props.user, comment: newComment})
+        if(result.postUpdate){
+            const update = await getPost(post._id)
+            setComments(update.post.comments)
+        }
         setNewComment('');
         setCommentBoxVisible(false);
     }
@@ -77,7 +102,7 @@ function PostView(props) {
                     <h2>{date}</h2>
                 </div>
                 <div className='information-container'>
-                    <img src='likesImage.png' alt='likes icon'></img>
+                    <img src='likesImage.png' alt='likes icon' onClick={handlePostLike}></img>
                     <h2>{likes}</h2>
                 </div>
                 <div className='information-container'>

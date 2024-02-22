@@ -44,11 +44,11 @@ function AccountTemplatePost(props) {
                 </div>
                 <div className='information-container'>
                     <img src='likesImage.png' alt="Likes" />
-                    <h2>{post.comments.length}</h2>
+                    <h2>{post.likes.length}</h2>
                 </div>
                 <div className='information-container'>
                     <img src='commentsImage.png' alt="Comments" />
-                    <h2>{post.likes.length}</h2>
+                    <h2>{post.comments.length}</h2>
                 </div>
             </div>
         </div>

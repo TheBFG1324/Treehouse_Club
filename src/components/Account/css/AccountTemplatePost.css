@@ -26,9 +26,10 @@
 }
 
 .postImage-container img {
-    max-width: 100%; /* Ensure the image doesn't overflow its container */
-    height: auto;
-    border-bottom: 1px solid #ccc; /* Separator between image and text */
+    width: 300px; /* Fixed width */
+    height: 300px; /* Fixed height */
+    border-bottom: 1px solid #ccc;
+    object-fit: cover; /* This will cover the area without distorting the image */
 }
 
 /* Style for the title below the image */
