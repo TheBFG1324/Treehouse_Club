@@ -43,7 +43,7 @@ function App() {
         <NavigationBar onPageChange={handlePageChange}/>
       </div>
       {activePage === "About" && <About />}
-      {activePage === "Feed" && <Feed />}
+      {activePage === "Feed" && <Feed user={account}/>}
       {activePage === "Search" && <Search />}
       {activePage === "Account" && <Account user={account} anonymousUser={anonymousAccount} googleId={googleID} isHomeUser={true}/>}
     </div>

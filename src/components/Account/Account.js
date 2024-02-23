@@ -108,7 +108,7 @@ function Account(props) {
                 <div className='modal'>
                     <div className='modal-content'>
                         {Public && <PostView postInfo={selectedPost} user={publicName} onClick={closePost} toggleReload={toggleReload}/>}
-                        {!Public && <PostView postInfo={selectedPost} user={anonymousName} onClick={closePost} toggleReload={toggleReload}/>}
+                        {!Public && <PostView postInfo={selectedPost} user={props.anonymousUser} onClick={closePost} toggleReload={toggleReload}/>}
                      </div>
                 </div>
             )}

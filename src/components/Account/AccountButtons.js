@@ -55,7 +55,6 @@ function AccountButtons(props) {
                 imageType: coverPictureType
             }
             const post = await createPost(data) 
-            console.log(post)
         }
         setShowForm(false);
         props.toggleReload()

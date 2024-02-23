@@ -1,28 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FeedTemplatePost from './FeedTemplatePost.js';
 import './css/Feed.css'
 import PostView from "../General/ViewPost.js"
+import loadPosts from '../Api-Functions/loadPosts.js';
 
 
-function Feed(){
-    let post = {
-        account: "TheBFG1324",
-        post: 'OdeToYes.pdf',
-        postImage: "dec.jpeg",
-        title: "Ode To Yes",
-        date: "10/25/23",
-        likes: 16,
-        comments: {
-            "Sally": "Good job Tim",
-            "Bob": "Fuck you Tim"
-        },
-        commentsCount: 2,
-        profilePicture: "test2.jpeg"
-    };
+function Feed(props){
+    const user = props.user
+    const [round, setRound] = useState(0)
+    const [feedPostIds, setFeedPostIds] = useState([])
 
-    let initial = [post, post, post, post, post]
+    useEffect(() => {
+        const fetchData = async () => {
+            const currentRoundPostIds = await loadPosts(user, round);
+            if (currentRoundPostIds) {
+                setFeedPostIds(currentRoundPostIds);
+            }
+        };
+        fetchData();
+    }, [round]);
+    
 
-    const [posts, setPosts] = useState(initial)
     const [selectedPost, setSelectedPost] = useState(null);
 
     const closePost = () =>{
@@ -34,14 +32,15 @@ function Feed(){
     }
 
     const addMorePosts = () => {
-        setPosts(prevPosts => [...prevPosts, post, post, post, post, post])
-    }
+        setRound(prevRound => prevRound + 1);
+    };
+    
 
     return(
        <div className='feed-container'>
             <div className='feedPosts-container'>
-                {posts.map((post, index) => (
-                    <FeedTemplatePost key={index} postInfo={post} onClick={selectPost} />
+                {feedPostIds.map((postId, index) => (
+                    <FeedTemplatePost key={index} postId={postId} onClick={selectPost} />
                 ))}
             </div>
             <div className='addPosts-btn'>
@@ -50,7 +49,7 @@ function Feed(){
             {selectedPost && (
                 <div className='modal'>
                     <div className='modal-content'>
-                        <PostView postInfo={selectedPost} user={post.account} onClick={closePost}/>
+                        <PostView postInfo={selectedPost} user={user} onClick={closePost}/>
                      </div>
                 </div>
             )}
