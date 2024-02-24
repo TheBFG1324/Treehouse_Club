@@ -14,7 +14,7 @@ function Feed(props){
         const fetchData = async () => {
             const currentRoundPostIds = await loadPosts(user, round);
             if (currentRoundPostIds) {
-                setFeedPostIds(currentRoundPostIds);
+                setFeedPostIds(prevIds => [...prevIds, ...currentRoundPostIds]);
             }
         };
         fetchData();
