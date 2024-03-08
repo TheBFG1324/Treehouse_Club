@@ -1,0 +1,55 @@
+/* Search.css */
+
+.search-container {
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Ensures padding does not affect width */
+}
+
+.search-input {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px; /* Adjust to your preference */
+    font-size: 1rem; /* Adjust to your preference */
+    border: 2px solid #ef6509; /* Example blue border */
+    outline: none;
+    border-radius: 4px; /* Rounded corners */
+    margin-bottom: 10px; /* Space between input and list */
+    box-sizing: border-box;
+}
+
+.accounts-list {
+    display: none; /* Initially hidden */
+    max-height: 200px; /* Maximum height before scroll */
+    overflow-y: auto; /* Enables scroll if content exceeds max-height */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-sizing: border-box;
+}
+
+.account-item {
+    padding: 10px; /* Space inside each item */
+    border-bottom: 1px solid #eee; /* Light grey line between items */
+    cursor: pointer;
+    background-color: #fff; /* White background */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide text that overflows */
+    text-overflow: ellipsis; /* Show ellipsis if text overflows */
+}
+
+/* Dynamic styles based on the number of accounts */
+.account-item-visible {
+    display: flex; /* Use flex layout */
+    flex-direction: column; /* Stack items vertically */
+    max-height: 200px; /* Maximum height before scroll */
+    overflow-y: auto; /* Show scrollbar if needed */
+}
+
+.account-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.account-item:hover {
+    background-color: #f8f8f8; /* Light grey background on hover */
+}
+

@@ -4,7 +4,6 @@ import './css/Feed.css'
 import PostView from "../General/ViewPost.js"
 import loadPosts from '../Api-Functions/loadPosts.js';
 
-
 function Feed(props){
     const user = props.user
     const [round, setRound] = useState(0)

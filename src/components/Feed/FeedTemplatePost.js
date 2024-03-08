@@ -12,6 +12,7 @@ function FeedTemplatePost(props) {
     const [date, setDate] = useState('')
     const [likesCount, setLikesCount] = useState(0)
     const [commentsCount, setCommentsCount] = useState(0)
+    const [post, setPost] = useState(null)
     const postId = props.postId;
 
     
@@ -19,6 +20,7 @@ function FeedTemplatePost(props) {
         const fetchData = async () => {
             const response = await getPost(postId)
             const postData = response.post
+            setPost(postData)
             const profileInfo = await getAccountInfo(postData.owner)
             if(profileInfo.profileImage){
                 const profPic = await getFile(profileInfo.profileImage)
@@ -39,7 +41,7 @@ function FeedTemplatePost(props) {
     }, [])
 
     return (
-        <div className="feedTemplatePost-container" onClick={() => props.onClick(postId)}>
+        <div className="feedTemplatePost-container" onClick={() => props.onClick(post)}>
             <div className="profile-section">
                 <img className="profile-pic" src={profilePicture} alt="profile pic"></img>
                 <h3>{account}</h3>

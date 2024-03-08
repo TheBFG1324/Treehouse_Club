@@ -398,18 +398,21 @@ app.post('/api/comment-post', async (req, res) => {
 
 app.get('/api/search-account', async (req, res) => {
     try {
-
         const { name } = req.query;
         if (!name) {
             return res.status(400).json({ message: 'Missing or invalid parameters in request' });
         }
         const queryRegex = new RegExp(name, 'i');
-        const foundAccounts = await accounts.find({ name: queryRegex }).sort({ "engagements": -1 }).toArray();
-        res.status(200).json(foundAccounts);
+        // Adjust the projection to only include the name field
+        const foundAccounts = await accounts.find({ name: queryRegex }, { projection: { _id: 0, name: 1 } }).sort({ "engagements": -1 }).toArray();
+        // Map the result to return only names
+        const accountNames = foundAccounts.map(account => account.name);
+        res.status(200).json(accountNames);
     } catch (error) {
         res.status(500).json({ message: 'Error occurred while fetching items', error });
     }
 });
+
 
 
 app.post('/api/follow-unfollow', async (req, res) => {
