@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Account from '../Account/Account';
 import searchAccount from '../Api-Functions/searchAccount.js';
-import './css/Search.css';
+import './css/Search.css'; // Ensure the path is correct
 
-function Search() {
+function Search(props) {
+    const user = props.user
+    const googleId = props.googleId
     const [searchTerm, setSearchTerm] = useState('');
     const [accounts, setAccounts] = useState([]);
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     // Function to simulate API call
     const getAccounts = async (query) => {
-        const searchedAccounts = await searchAccount(query)
-        setAccounts(searchedAccounts)
+        const searchedAccounts = await searchAccount(query);
+        setAccounts(searchedAccounts);
+    };
+
+    // Function to clear the selected account
+    const unselectAccount = () => {
+        setSelectedAccount(null);
     };
 
     useEffect(() => {
@@ -22,28 +29,36 @@ function Search() {
         }
     }, [searchTerm]);
 
-    const listClasses = `accounts-list ${accounts.length > 0 ? 'account-item-visible' : ''}`;
-    const listStyle = {
-        height: accounts.length === 1 ? 'auto' : accounts.length > 10 ? '200px' : `${accounts.length * 20}px`,
-    };
+    const listClasses = `accounts-list ${accounts.length > 0 ? 'visible' : ''}`;
 
     return (
-        <div className="search-container">
-            <input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-            />
-            <div className={listClasses} style={listStyle}>
-                {accounts.map((account, index) => (
-                    <div key={index} onClick={() => setSelectedAccount(account)} className="account-item">
-                        {account} {/* Adjust according to your data structure */}
-                    </div>
-                ))}
+        <div className="search-wrapper">
+            <div className="search-bar-container">
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-input"
+                />
+                <div className={listClasses}>
+                    {accounts.map((account, index) => (
+                        <div 
+                            key={index} 
+                            onClick={() => setSelectedAccount(account)}
+                            className={`account-item ${selectedAccount === account ? 'account-item-selected' : ''}`}
+                        >
+                            {account}
+                        </div>
+                    ))}
+                </div>
+                {selectedAccount && (
+                    <button onClick={unselectAccount} className="unselect-account-button">Unselect Account</button>
+                )}
             </div>
-            {selectedAccount && <Account account={selectedAccount} />}
+            <div className='selected-account-container'>
+            {selectedAccount && <Account user={selectedAccount} googleId={googleId} isHomeUser={false}/>}
+            </div>
         </div>
     );
 }

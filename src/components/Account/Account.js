@@ -29,7 +29,12 @@ function Account(props) {
         async function fetchData() {
             try {
                 const pubProfileInfo = await getAccountInfo(props.user);
-                const anonymousProfileInfo = await getAccountInfo(props.anonymousUser);
+                if(isHomeUser){
+                    const anonymousProfileInfo = await getAccountInfo(props.anonymousUser);
+                    setPrivateEngagement(anonymousProfileInfo.engagements);
+                    setAnonymousPostIds(anonymousProfileInfo.posts.reverse());
+                    setPrivatePostCount(anonymousProfileInfo.posts.length);
+                }
                 const profilePictureId = pubProfileInfo.profileImage;
                 const pic = await getFile(profilePictureId)
                 const imageURL = URL.createObjectURL(pic);
@@ -39,9 +44,6 @@ function Account(props) {
                 setPublicPostIds(pubProfileInfo.posts.reverse())
                 setPublicPostCount(pubProfileInfo.posts.length);
                 setPublicEngagement(pubProfileInfo.engagements);
-                setPrivateEngagement(anonymousProfileInfo.engagements);
-                setAnonymousPostIds(anonymousProfileInfo.posts.reverse());
-                setPrivatePostCount(anonymousProfileInfo.posts.length);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

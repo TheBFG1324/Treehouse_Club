@@ -44,7 +44,7 @@ function App() {
       </div>
       {activePage === "About" && <About />}
       {activePage === "Feed" && <Feed user={account}/>}
-      {activePage === "Search" && <Search />}
+      {activePage === "Search" && <Search user={account}/>}
       {activePage === "Account" && <Account user={account} anonymousUser={anonymousAccount} googleId={googleID} isHomeUser={true}/>}
     </div>
   );

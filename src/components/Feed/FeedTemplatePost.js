@@ -42,7 +42,7 @@ function FeedTemplatePost(props) {
 
     return (
         <div className="feedTemplatePost-container" onClick={() => props.onClick(post)}>
-            <div className="profile-section">
+            <div className="feed-profile-section">
                 <img className="profile-pic" src={profilePicture} alt="profile pic"></img>
                 <h3>{account}</h3>
             </div>

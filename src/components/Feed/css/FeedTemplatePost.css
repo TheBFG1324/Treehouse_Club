@@ -16,7 +16,7 @@
 }
 
 /* Style the profile section */
-.profile-section {
+.feed-profile-section {
     position: absolute; /* Absolute positioning relative to feedTemplatePost-container */
     top: 20px; /* Adjust as needed */
     left: 20px; /* Adjust as needed */
