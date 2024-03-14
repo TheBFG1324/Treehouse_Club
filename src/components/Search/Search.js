@@ -16,6 +16,14 @@ function Search(props) {
         setAccounts(searchedAccounts);
     };
 
+    const handleAccountSelection = (account) => {
+        if(selectedAccount){
+            setSelectedAccount(null)
+        } else{
+            setSelectedAccount(account)
+        }
+    }
+
     // Function to clear the selected account
     const unselectAccount = () => {
         setSelectedAccount(null);
@@ -45,16 +53,13 @@ function Search(props) {
                     {accounts.map((account, index) => (
                         <div 
                             key={index} 
-                            onClick={() => setSelectedAccount(account)}
+                            onClick={() => handleAccountSelection(account)}
                             className={`account-item ${selectedAccount === account ? 'account-item-selected' : ''}`}
                         >
                             {account}
                         </div>
                     ))}
                 </div>
-                {selectedAccount && (
-                    <button onClick={unselectAccount} className="unselect-account-button">Unselect Account</button>
-                )}
             </div>
             <div className='selected-account-container'>
             {selectedAccount && <Account user={selectedAccount} googleId={googleId} isHomeUser={false}/>}

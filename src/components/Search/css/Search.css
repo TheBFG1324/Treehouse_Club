@@ -60,27 +60,6 @@
     border-bottom: none;
 }
 
-.unselect-account-button {
-    width: 100%; /* Makes the button full width */
-    padding: 10px 0; /* Adjust vertical padding to your preference */
-    font-size: 1rem;
-    color: #333;
-    background-color: #fca542;
-    border: clear;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-    box-sizing: border-box;
-    text-align: center; /* Centers the text within the button */
-    display: block; /* Makes the button a block-level element */
-}
-
-
-.unselect-account-button:hover {
-    background-color: #f2f2f2;
-}
-
-
 @media (max-width: 600px) {
     .search-input,
     .account-item {
