@@ -19,7 +19,6 @@
     background-color: rgb(247, 248, 243);
     align-items: flex-start;
     box-sizing: border-box;
-    padding-bottom: 80px;
 
 }
 
@@ -30,7 +29,6 @@
     margin-right: 40px;
     margin-left: 40px;
     margin-bottom: 30px;
-    margin-top: 130px;
 
 }
 
@@ -54,7 +52,6 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
-    margin-left: 40px; /* Added margin to the left to push content right */
     margin-top: 50px;
 }
 

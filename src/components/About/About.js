@@ -25,10 +25,11 @@ function About() {
         Treehouse Club aims to be the catalyst for such liberation.
       </p>
       <p>
-        Be the change you want to see in the world. Wave your quill with
-        unwavering determination. Paint the world in the light that you see it.
-        Feel the flames of your soul burn bright. Welcome to the Treehouse
-        Club.
+        Be the change you want to see in the world. Paint the universe in the light that you see it.
+        Feel the flames of your soul burn bright.
+      </p>
+      <p>
+      Welcome to the Treehouse Club.
       </p>
     </div>
     </div>

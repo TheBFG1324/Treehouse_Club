@@ -42,7 +42,6 @@
 
 /* Button Styling */
 button {
-    flex: 1; /* Make buttons share the container space equally */
     padding: 10px 20px;
     cursor: pointer;
     border: none;
