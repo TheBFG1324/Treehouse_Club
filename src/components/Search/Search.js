@@ -10,7 +10,6 @@ function Search(props) {
     const [accounts, setAccounts] = useState([]);
     const [selectedAccount, setSelectedAccount] = useState(null);
 
-    // Function to simulate API call
     const getAccounts = async (query) => {
         const searchedAccounts = await searchAccount(query);
         setAccounts(searchedAccounts);
@@ -62,7 +61,7 @@ function Search(props) {
                 </div>
             </div>
             <div className='selected-account-container'>
-            {selectedAccount && <Account user={selectedAccount} googleId={googleId} isHomeUser={false}/>}
+            {selectedAccount && <Account user={selectedAccount} callingAccount={user} googleId={googleId} isHomeUser={false}/>}
             </div>
         </div>
     );

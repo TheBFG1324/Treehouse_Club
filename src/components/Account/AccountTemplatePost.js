@@ -26,6 +26,18 @@ function AccountTemplatePost(props) {
         fetchPost();
     }, [props.postId]);
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+        });
+    }
+    
+    
+    
+
     if (!post) {
         return <div>Loading post...</div>; // Or any other placeholder
     }
@@ -40,7 +52,7 @@ function AccountTemplatePost(props) {
             <div className='PostInformation-container'>
                 <div className='information-container'>
                     <img src='dateImage.png' alt="Date" />
-                    <h2>{post.date}</h2>
+                    <h2>{formatDate(post.date)}</h2>
                 </div>
                 <div className='information-container'>
                     <img src='likesImage.png' alt="Likes" />

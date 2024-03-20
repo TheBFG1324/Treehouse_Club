@@ -40,6 +40,15 @@ function FeedTemplatePost(props) {
         fetchData();
     }, [])
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+        });
+    }
+
     return (
         <div className="feedTemplatePost-container" onClick={() => props.onClick(post)}>
             <div className="feed-profile-section">
@@ -53,7 +62,7 @@ function FeedTemplatePost(props) {
             <div className='PostInformation-container'>
                 <div className='information-container'>
                     <img src='dateImage.png'></img>
-                    <h2>{date}</h2>
+                    <h2>{formatDate(date)}</h2>
                 </div>
                 <div className='information-container'>
                     <img src='likesImage.png'></img>

@@ -24,6 +24,8 @@ function Account(props) {
     const [publicPostIds, setPublicPostIds] = useState([]);
     const [anonymousPostIds, setAnonymousPostIds] = useState([])
     const [reload, toggleReload] = useState(false)
+    const [Public, setPublic] = useState(true);
+    const [selectedPost, setSelectedPost] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -36,14 +38,19 @@ function Account(props) {
                     setPrivatePostCount(anonymousProfileInfo.posts.length);
                 }
                 const profilePictureId = pubProfileInfo.profileImage;
-                const pic = await getFile(profilePictureId)
-                const imageURL = URL.createObjectURL(pic);
+                if(profilePictureId){
+                    const pic = await getFile(profilePictureId)
+                    const imageURL = URL.createObjectURL(pic)
+                    setProfilePictureURL(imageURL)
+                } else {
+                    setProfilePictureURL("Treehouse1.png")
+                }
                 setFollowers(pubProfileInfo.followers.length);
                 setFollowing(pubProfileInfo.following.length);
-                setProfilePictureURL(imageURL)
                 setPublicPostIds(pubProfileInfo.posts.reverse())
                 setPublicPostCount(pubProfileInfo.posts.length);
                 setPublicEngagement(pubProfileInfo.engagements);
+                
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -51,9 +58,6 @@ function Account(props) {
 
         fetchData();
     }, [props.publicName, props.anonymousUser, reload]); // Dependencies for useEffect
-
-    const [Public, setPublic] = useState(true);
-    const [selectedPost, setSelectedPost] = useState(null);
 
     const toggleAccountChange = () => {
         setPublic(!Public);
@@ -95,7 +99,7 @@ function Account(props) {
                     </div>
                     <div className='account-buttons'>
                         {isHomeUser && <AccountButtons account={publicName} changeAccount={toggleAccountChange} googleId={googleId} publicName={props.user} anonymousName={props.anonymousUser} toggleReload={toggleReload} />}
-                        {!isHomeUser && <FollowButton callingAccountGoogleId={googleId} otherAccountGoogleId={googleId} callingAccount={publicName} otherAccount={publicName}/>}
+                        {!isHomeUser && <FollowButton  callingAccount={publicName} otherAccount={props.callingAccount}/>}
                     </div>
                 </div>
             </div>

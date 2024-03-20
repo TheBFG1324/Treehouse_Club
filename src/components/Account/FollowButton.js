@@ -6,21 +6,19 @@ import './css/FollowButton.css'
 function FollowButton(props) {
     const [isFollowing, setIsFollowing] = useState(false);
     const [follow, setFollow] = useState(true);
+    const [callingAccountGoogleId, setCallingAccountGoogleId] = useState(null)
+    const [otherAccountGoogleId, setOtherAccountGoogleId] = useState(null)
 
-    const callingAccountGoogleId = props.callingAccountGoogleId;
-    const otherAccountGoogleId = props.otherAccountGoogleId;
     const callingAccount = props.callingAccount;
     const otherAccount = props.otherAccount;
-
-    console.log(callingAccount)
-    console.log(otherAccount)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getAccountInfo(callingAccount);
-                console.log(response)
-                // Assuming userData has a property like 'following' which is an array of accounts the user is following
+                const response2 = await getAccountInfo(otherAccount)
+                setCallingAccountGoogleId(response.googleId)
+                setOtherAccountGoogleId(response2.googleId)
                 if (response.following.includes(otherAccount)) {
                     setIsFollowing(true);
                     setFollow(false);
