@@ -48,12 +48,12 @@ function Login(props) {
                 imageType: userData.pictureType
 
             }
-            console.log("in login")
-            console.log(data)
+
             const result = await createAccount(data)
             if(result.enrollId){
                 props.onSuccess(userData.googleId)
                 props.setUser(userData.accountName)
+                props.setAnonymousUser(result.AnonymousName)
             }
         }
     };

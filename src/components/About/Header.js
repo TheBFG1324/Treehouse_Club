@@ -31,10 +31,10 @@ function Header() {
           setWordIndex((wordIndex + 1) % addings.length); // Move to the next word or loop back
           setLetterIndex(0); // Reset for the next word
           setIsEndOfWord(false); // Reset the end of word flag
-        }, 1000);
+        }, 1500);
         clearInterval(interval); // Clear the typing interval during the pause
       }
-    }, 200);
+    }, 100);
 
     return () => clearInterval(interval);
   }, [wordIndex, letterIndex, isEndOfWord]); // Include isEndOfWord in dependencies

@@ -148,7 +148,7 @@ app.post('/api/create-account', async (req, res) => {
                 await googleIdMapping.deleteOne({ _id: enrollAccountResult.insertedId });
                 throw new Error('Failed to create accounts');
             }
-            res.status(200).json({ enrollId: enrollAccountResult.insertedId, accountsId: accountsResult.insertedIds, ...publicAccount, ...anonymousAccount });
+            res.status(200).json({ enrollId: enrollAccountResult.insertedId, AnonymousName: anonymousName, accountsId: accountsResult.insertedIds, ...publicAccount, ...anonymousAccount });
         } catch (accountsError) {
             // Rollback enrollAccount if any error occurs in accounts creation
             await googleIdMapping.deleteOne({ _id: enrollAccountResult.insertedId });
