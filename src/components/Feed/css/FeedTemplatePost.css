@@ -12,7 +12,7 @@
 }
 
 .feedTemplatePost-container:hover {
-    transform: scale(1.02); /* Increase the size of the container by 5% */
+    transform: scale(1.01); /* Increase the size of the container by 5% */
 }
 
 /* Style the profile section */

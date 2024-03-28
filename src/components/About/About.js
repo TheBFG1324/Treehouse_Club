@@ -8,7 +8,7 @@ function About() {
     <div>
     <Header />
     <div className='AboutContainer'>
-      <h1>Mission Statement</h1>
+      <h1 className='AboutTitle'>Mission Statement</h1>
       <p>
         At The Treehouse Club, we are dedicated to fostering a vibrant community
         of creators and thinkers who value authenticity, self-expression, and the

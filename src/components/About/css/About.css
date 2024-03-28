@@ -1,25 +1,51 @@
 /* About.css */
 .AboutContainer {
-    max-width: 800px;
-    margin: 100px auto; /* Add margin at the top to separate it from the component above */
-    padding: 20px;
-    border: 8px solid #076a6a;
-    border-radius: 5px;
-    text-align: center; /* Center-align the content */
+  max-width: 800px;
+  margin: 100px auto; /* Center the container with top margin */
+  padding: 40px; /* Increase padding for a spacious look */
+  background-color: #f9f9f9; /* Light background color for a modern feel */
+  border: none; /* Remove the border */
+  box-shadow: 0 4px 8px rgb(24, 24, 24); /* Soft shadow for depth */
+  border-radius: 10px; /* Rounded corners for a smoother look */
+  text-align: center; /* Center-align the content */
+}
+
+h1 {
+  font-size: 48px; /* Slightly larger font size for the heading */
+  color: #333; /* Color that matches your theme */
+  margin-bottom: 30px; /* Space below the heading */
+  font-weight: 600; /* More weight for the heading */
+}
+
+h1.AboutTitle {
+  font-size: 48px; /* Slightly larger font size for the heading */
+  color: #055252; /* Color that matches your theme */
+  margin-bottom: 30px; /* Space below the heading */
+  font-weight: 600; /* More weight for the heading */
+}
+
+p {
+  font-size: 18px; /* Adjust font size for better readability */
+  color: #333; /* Dark color for contrast */
+  line-height: 1.8; /* Increased line height for readability */
+  text-align: center; /* Justify-align paragraphs for a clean look */
+  margin-top: 20px; /* Maintain spacing between paragraphs */
+  font-family: 'Arial', sans-serif; /* Modern, sans-serif font for the text */
+}
+
+/* Responsive design adjustments (optional) */
+@media (max-width: 768px) {
+  .AboutContainer {
+    padding: 20px; /* Lesser padding on smaller screens */
   }
-  
+
   h1 {
-    font-size: 44px;
-    color: #333;
+    font-size: 36px; /* Smaller heading on smaller screens */
   }
-  
+
   p {
-    font-size: 22px;
-    color: #333; /* Darken the text color for better contrast */
-    line-height: 1.6; /* Increase line height for readability */
-    text-align: left; /* Left-align the paragraphs within the centered container */
-    margin-top: 20px; /* Add some spacing between paragraphs */
+    font-size: 16px; /* Smaller text on smaller screens */
   }
-  
-  /* Add more styles as needed */
+}
+
   
