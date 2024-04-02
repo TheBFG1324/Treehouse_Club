@@ -4,8 +4,8 @@ import searchAccount from '../Api-Functions/searchAccount.js';
 import './css/Search.css'; // Ensure the path is correct
 
 function Search(props) {
-    const user = props.user
-    const googleId = props.googleId
+    const user = props.user;
+    const googleId = props.googleId;
     const [searchTerm, setSearchTerm] = useState('');
     const [accounts, setAccounts] = useState([]);
     const [selectedAccount, setSelectedAccount] = useState(null);
@@ -16,27 +16,16 @@ function Search(props) {
     };
 
     const handleAccountSelection = (account) => {
-        if(selectedAccount){
-            setSelectedAccount(null)
-        } else{
-            setSelectedAccount(account)
-        }
-    }
-
-    // Function to clear the selected account
-    const unselectAccount = () => {
-        setSelectedAccount(null);
+        setSelectedAccount(account);
     };
 
     useEffect(() => {
-        if (searchTerm) {
+        if (searchTerm && !selectedAccount) {
             getAccounts(searchTerm);
         } else {
             setAccounts([]);
         }
-    }, [searchTerm]);
-
-    const listClasses = `accounts-list ${accounts.length > 0 ? 'visible' : ''}`;
+    }, [searchTerm, selectedAccount]);
 
     return (
         <div className="search-wrapper">
@@ -48,24 +37,25 @@ function Search(props) {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
                 />
-                <div className={listClasses}>
-                    {accounts.map((account, index) => (
-                        <div 
-                            key={index} 
-                            onClick={() => handleAccountSelection(account)}
-                            className={`account-item ${selectedAccount === account ? 'account-item-selected' : ''}`}
-                        >
-                            {account}
-                        </div>
-                    ))}
-                </div>
+                {!selectedAccount && (
+                    <div className={`accounts-list ${accounts.length > 0 ? 'visible' : ''}`}>
+                        {accounts.map((account, index) => (
+                            <div 
+                                key={index} 
+                                onClick={() => handleAccountSelection(account)}
+                                className={`account-item ${selectedAccount === account ? 'account-item-selected' : ''}`}
+                            >
+                                {account}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
             <div className='selected-account-container'>
-            {selectedAccount && <Account user={selectedAccount} callingAccount={user} googleId={googleId} isHomeUser={false}/>}
+                {selectedAccount && <Account user={selectedAccount} callingAccount={user} googleId={googleId} isHomeUser={false}/>}
             </div>
         </div>
     );
 }
 
 export default Search;
-
