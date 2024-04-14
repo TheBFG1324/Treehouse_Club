@@ -19,6 +19,7 @@
     background-color: rgb(247, 248, 243);
     align-items: flex-start;
     box-sizing: border-box;
+    backdrop-filter: blur(10px);
 
 }
 

@@ -94,7 +94,7 @@ function PostView(props) {
                     <button className="close-button" onClick={props.onClick}>X</button>
                 </div>
             </div>
-            <h4>{user}</h4>
+            <h4>{postOwner}</h4>
             <embed src={postUrl} type="application/pdf" width="100%" height="500px" />
             <div className='PostInformation-container'>
                 <div className='information-container'>

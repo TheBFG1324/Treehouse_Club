@@ -26,6 +26,7 @@ function Feed(props) {
     };
 
     const selectPost = (post) => {
+        console.log("POST", post)
         setSelectedPost(post);
     };
 

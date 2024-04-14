@@ -7,6 +7,10 @@
     align-items: center; /* Center-align the elements */
 }
 
+.search-wrapper-selected {
+    background-color: rgb(247, 248, 243);
+}
+
 .search-bar-container {
     width: 100%;
     max-width: 800px; /* Set a max width for the search bar */

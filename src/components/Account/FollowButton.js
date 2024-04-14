@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FollowUnfollow from '../Api-Functions/FollowUnfollow';
 import getAccountInfo from '../Api-Functions/getAccountInfo';
-import './css/FollowButton.css'
+import './css/FollowButton.css';  // Make sure the path matches where the CSS file is saved
 
 function FollowButton(props) {
     const [isFollowing, setIsFollowing] = useState(false);
@@ -27,7 +27,6 @@ function FollowButton(props) {
                 console.error('Error fetching user data:', error);
             }
         };
-
         fetchData();
     }, [callingAccount, otherAccount]); // Dependency array to run the effect when these values change
 
@@ -55,4 +54,3 @@ function FollowButton(props) {
 }
 
 export default FollowButton;
-

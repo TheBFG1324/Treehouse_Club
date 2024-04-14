@@ -28,7 +28,7 @@ function Search(props) {
     }, [searchTerm, selectedAccount]);
 
     return (
-        <div className="search-wrapper">
+        <div className={`search-wrapper ${selectedAccount ? 'search-wrapper-selected' : ''}`}>
             <div className="search-bar-container">
                 <input
                     type="text"
