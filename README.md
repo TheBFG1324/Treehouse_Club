@@ -8,7 +8,7 @@ Treehouse Club is a unique blogging platform designed for individuals who value 
 - **Non-Anonymous Posting**: Publish posts under your profile to build your personal brand and gain recognition for your work.
 - **Dual-Posting Flexibility**: Choose how you want to share your ideas—discreetly or openly.
 
-## Why Choose Treehouse Club?
+## Why Choose The Treehouse Club?
 
 This dual-posting feature encourages creativity and open communication, making Treehouse Club the perfect platform for:
 - Writers
